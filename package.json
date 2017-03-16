@@ -1,0 +1,25 @@
+{
+  "name": "graduationdesign",
+  "version": "1.0.0",
+  "description": "基于NodeJs的静态博客的设计与实现",
+  "main": "index.js",
+  "bin": {
+    "graduationdesign": "index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlkalizZ/NodeJsGraduationDesign.git"
+  },
+  "author": "Alkali",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlkalizZ/NodeJsGraduationDesign/issues"
+  },
+  "homepage": "https://github.com/AlkalizZ/NodeJsGraduationDesign#readme",
+  "dependencies": {
+    "express": "^4.15.2"
+  }
+}
