@@ -3,5 +3,5 @@
  */
 
 'use strict';
-
-
+var generate = require('../lib/generate');
+generate.generate();
