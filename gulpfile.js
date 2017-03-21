@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var index = require('./bin/index');
 
 gulp.task('default', () => {
   // 默认任务
@@ -19,4 +20,6 @@ gulp.task('g', () => {
 });
 gulp.task('clean', () => {
   // 清除public文件夹
+    
+    index.clean('public');
 });
