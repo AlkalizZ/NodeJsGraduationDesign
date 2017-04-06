@@ -1,5 +1,5 @@
 # NodeJsGraduationDesign
-毕业设计
+毕业设计 基于NodeJS的静态博客的设计与实现
 
 ## 系统初始化
 gulp init
