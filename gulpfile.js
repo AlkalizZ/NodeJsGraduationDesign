@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var count = require('gulp-count');
 var index = require('./bin/index');
 var fs = require('fs');
 
@@ -31,10 +32,10 @@ gulp.task('new', () => {
 
 // 生成public文件夹及文件
 gulp.task('generate', () => {
-    index.clean('public');
-    index.generate('./public/js');
-    index.generate('./public/img');
-    index.generate('./public/css');
+    // index.clean('public');
+    var f = {};
+    gulp.src('./source/_post/*.md')
+    .pipe(count());
 });
 
 // 清除public文件夹
