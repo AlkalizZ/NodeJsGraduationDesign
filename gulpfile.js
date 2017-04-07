@@ -7,7 +7,6 @@ gulp.task('default', () => {
     // 默认任务
     console.log('this is default task');
 });
-
 //TODO 生成基础文件夹及文件
 gulp.task('init', () => {
     fs.readFile('./assets/_config.json', 'utf-8', (err, data) => {
@@ -31,26 +30,21 @@ gulp.task('new', () => {
 
 // 生成public文件夹及文件
 gulp.task('generate', () => {
-    // index.clean('public');
-    
+
+    // 渲染markdown文件
     fs.readdir('./source/_post/', (err, files) => {
         if(err) throw err;
         var arr = [];
         files.forEach((value) => {
-            if(value.split('.')[1] === 'md' || value.split('.')[1] === 'html') {
-                arr.push(value);
+            if(value.split('.')[1] === 'md'){
+                // arr.push(value);
                 fs.readFile(`./source/_post/${value}`, 'utf-8', (err, data) => {
                     if (err) throw err;
-                    if(value.split('.')[1] === 'md'){
-                        index.generate(`./public/${value.split('.')[0]}.html`, index.marked(data));
-                    }else{
-                        index.generate(`./public/${value}`, data);
-                    }
-                    
+                    index.generate(`./public/${value.split('.')[0]}.html`, index.marked(data));
                 });
             }
         })
-        files = arr;
+        // files = arr;
     });
 });
 
