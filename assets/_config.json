@@ -1,0 +1,14 @@
+{
+    "title": "",
+    "subtitle": "",
+    "description": "",
+    "author": "",
+    "language": "",
+    "url": "http://yourstite.com",
+    "root": "/",
+    "source_dir": "source",
+    "public_dir": "public",
+    "new_post_default_name": "title",
+    "highlight": true,
+    "theme": "theme1"
+}

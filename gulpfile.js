@@ -10,11 +10,11 @@ gulp.task('default', () => {
 
 //TODO 生成基础文件夹及文件
 gulp.task('init', () => {
-    fs.readFile('./assets/_config.yml', 'utf-8', (err, data) => {
+    fs.readFile('./assets/_config.json', 'utf-8', (err, data) => {
         if(err){
             console.log(err);
         }
-        index.generate('./_config.yml', data);
+        index.generate('./_config.json', data);
     });
 });
 
