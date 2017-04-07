@@ -3,7 +3,6 @@ var count = require('gulp-count');
 var index = require('./bin/index');
 var fs = require('fs');
 
-
 gulp.task('default', () => {
     // 默认任务
     console.log('this is default task');
@@ -33,9 +32,26 @@ gulp.task('new', () => {
 // 生成public文件夹及文件
 gulp.task('generate', () => {
     // index.clean('public');
-    var f = {};
-    gulp.src('./source/_post/*.md')
-    .pipe(count());
+    
+    fs.readdir('./source/_post/', (err, files) => {
+        if(err) throw err;
+        var arr = [];
+        files.forEach((value) => {
+            if(value.split('.')[1] === 'md' || value.split('.')[1] === 'html') {
+                arr.push(value);
+                fs.readFile(`./source/_post/${value}`, 'utf-8', (err, data) => {
+                    if (err) throw err;
+                    if(value.split('.')[1] === 'md'){
+                        index.generate(`./public/${value.split('.')[0]}.html`, index.marked(data));
+                    }else{
+                        index.generate(`./public/${value}`, data);
+                    }
+                    
+                });
+            }
+        })
+        files = arr;
+    });
 });
 
 // 清除public文件夹
