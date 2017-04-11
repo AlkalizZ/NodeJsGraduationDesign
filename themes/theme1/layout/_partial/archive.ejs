@@ -1,6 +1,6 @@
-<% if (pagination == 2){ %>
+<% if (msg == '1!'){ %>
   <% page.posts.each(function(post){ %>
-    <%- partial('article', {post: post, index: true}) %>
+    <% partial('article', {post: post, index: true}) %>
   <% }) %>
   <% if (page.total > 1){ %>
     <nav id="page-nav">
@@ -39,5 +39,4 @@
       }) %>
     </nav>
   <% } %>
-
 <% } %>
