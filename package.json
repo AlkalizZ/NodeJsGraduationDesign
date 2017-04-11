@@ -24,6 +24,8 @@
     "express": "^4.15.2",
     "gulp": "^3.9.1",
     "gulp-count": "^0.3.0",
+    "gulp-ejs": "^3.0.1",
+    "gulp-logger": "0.0.2",
     "minimist": "^1.2.0"
   }
 }

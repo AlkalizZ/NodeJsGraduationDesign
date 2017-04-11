@@ -3,6 +3,8 @@ var count = require('gulp-count');
 var index = require('./bin/index');
 var fs = require('fs');
 var ejs = require('ejs');
+var gulpEjs = require('gulp-ejs');
+var logger = require('gulp-logger');
 
 gulp.task('default', () => {
     // 默认任务
@@ -46,6 +48,7 @@ gulp.task('generate', () => {
     
     // 获取config配置文件
     var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
+    var themeConfig = JSON.parse(fs.readFileSync(`./themes/${_config.theme}/_config.json`, 'utf-8'));
     // 渲染markdown文件
     fs.readdir('./source/_post/', (err, files) => {
         if(err) throw err;
@@ -61,12 +64,18 @@ gulp.task('generate', () => {
         })
         // files = arr;
     });
-    var content = fs.readFileSync('./themes/theme1/layout/index.ejs', 'utf-8');
+    // var content = fs.readFileSync('./themes/theme1/layout/index.ejs', 'utf-8');
     
-    var html = ejs.renderFile('./themes/theme1/layout/index.ejs', (e) => {
-        console.log(e);
-    });
-    index.generate('./public/index.html', html);
+    // var html = ejs.renderFile('./themes/theme1/layout/index.ejs', (e) => {
+    //     console.log(e)
+    // });
+    // index.generate('./public/index.html', html);
+    gulp.src(`./themes/${_config.theme}/layout/index.ejs`)
+        .pipe(gulpEjs(themeConfig, {}, {ext:'.html'}))
+        .pipe(logger({
+            after: `生成文件${path}成功！`
+        }))
+        .pipe(gulp.dest("./public"))
 
 
 
