@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var count = require('gulp-count');
 var index = require('./bin/index');
 var fs = require('fs');
+var ejs = require('ejs');
 
 gulp.task('default', () => {
     // 默认任务
@@ -60,6 +61,14 @@ gulp.task('generate', () => {
         })
         // files = arr;
     });
+    var content = fs.readFileSync('./themes/theme1/layout/index.ejs', 'utf-8');
+    
+    var html = ejs.renderFile('./themes/theme1/layout/index.ejs', (e) => {
+        console.log(e);
+    });
+    index.generate('./public/index.html', html);
+
+
 
 });
 
