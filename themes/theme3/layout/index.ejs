@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="baidu-site-verification" content="PhLbWGijzP"/>
+
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="<%= title %>">
+    <% if(url){ %>
+    <meta property="og:url" content="<%= url %>">
+    <% } %>
+    <meta property="og:site_name" content="<%= title %>">
+    <meta property="og:description">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="<%= title %>">
+    <meta name="twitter:description">
+    <link rel="alternative" href="/atom.xml" title="<%= title %>" type="application/atom+xml">
+    <link rel="icon" href="<%= favicon %>">
+    <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" type="text/css">
+    <link href="//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+    <!--<script>
+        var yiliaConfig = {
+            fancybox: true,
+            animate: true,
+            isHome: true,
+            isPost: false,
+            isArchive: false,
+            isTag: false,
+            isCategory: false,
+            open_in_new: false
+        }
+    </script>-->
+
+    <link rel="stylesheet" href="/css/highlight-zenburn.css">
+</head>
+<body>
+<div id="container">
+    <div class="left-col">
+        <div class="overlay"></div>
+        <div class="intrude-less">
+            <header id="header" class="inner">
+                <a href="/" class="profilepic"><img lazy-src="<%= avatar %>" class="js-avatar"></a>
+                <hgroup>
+                    <h1 class="header-author"><a href="/"><%= author %></a></h1>
+                </hgroup>
+                <p class="header-subtitle"><%= subtitle %></p>
+                <div id="switch-btn" class="switch-btn">
+                    <div class="icon">
+                        <div class="icon-ctn">
+                            <div class="icon-wrap icon-house" data-idx="0">
+                                <div class="birdhouse"></div>
+                                <div class="birdhouse_holes"></div>
+                            </div>
+                            <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                                <div class="ribbon"></div>
+                            </div>
+
+                            <div class="icon-wrap icon-link hide" data-idx="2">
+                                <div class="loopback_l"></div>
+                                <div class="loopback_r"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tips-box hide">
+                        <div class="tips-arrow"></div>
+                        <ul class="tips-inner">
+                            <li>菜单</li>
+                            <li>标签</li>
+                            <li>友情链接</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="switch-area" class="switch-area">
+                    <div class="switch-wrap">
+                        <section class="switch-part switch-part1">
+                            <nav class="header-menu">
+                                <ul>
+                                    <% for(key in menu){ %>
+                                    <li><a href="<%= menu[key] %>"><%= key %></a></li>
+                                    <% } %>
+                                </ul>
+                            </nav>
+                            <nav class="header-nav">
+                                <ul class="social">
+                                    <% for(key in subnav){ %>
+                                    <li id="<%= key %>"><a class="fa <%= key %>" target="_blank"
+                                                           href="<%- subnav[key] %>" title="<%= key %>"></a></li>
+                                    <% } %>
+                                </ul>
+                            </nav>
+                        </section>
+
+                        <section class="switch-part switch-part2">
+                            <div class="widget tagcloud" id="js-tagcloud">
+                                <a href="/tags/ABAP/" style="font-size: 10px;">ABAP</a> 
+                                <a href="/tags/HTTP-2/"style="font-size: 10px;">HTTP/2</a>
+                                <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a>
+                                <a href="/tags/JSONP/" style="font-size: 10px;">JSONP</a>
+                                <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> 
+                                <a href="/tags/Nginx/" style="font-size: 20px;">Nginx</a> 
+                                <a href="/tags/SAP/" style="font-size: 10px;">SAP</a>
+                                <a href="/tags/VPS/" style="font-size: 20px;">VPS</a> 
+                                <a href="/tags/hello-world/" style="font-size: 10px;">hello world</a> 
+                                <a href="/tags/node-js/" style="font-size: 10px;">node.js</a> 
+                                <a href="/tags/算法/" style="font-size: 10px;">算法</a> 
+                                <a href="/tags/重庆邮电大学-·-镜像源/" style="font-size: 10px;">重庆邮电大学 · 镜像源</a>
+                            </div>
+                        </section>
+
+                        <section class="switch-part switch-part3">
+                            <div id="js-friends">
+                                <% for(key in friends){ %>
+                                <a target="_blank" class="main-nav-link switch-friends-link"
+                                   href="<%= friends[key] %>"><%= key %></a>
+                                <% } %>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </header>
+        </div>
+    </div>
+    <div class="mid-col">
+        <nav id="mobile-nav">
+            <div class="overlay">
+                <div class="slider-trigger"></div>
+                <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页"><%= title %></a></h1>
+            </div>
+            <div class="intrude-less">
+                <header id="header" class="inner">
+                    <a href="/" class="profilepic">
+
+                        <img lazy-src="<%- avatar %>" class="js-avatar">
+
+                    </a>
+                    <hgroup>
+                        <h1 class="header-author"><a href="/" title="回到主页"><%= title %></a></h1>
+                    </hgroup>
+
+                    <p class="header-subtitle"><%= subtitle %></p>
+
+                    <nav class="header-menu">
+                        <ul>
+                            <% for(key in menu){ %>
+                            <li><a href="<%= menu[key] %>"><%= key %></a></li>
+                            <% } %>
+                            <div class="clearfix"></div>
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            <% for(key in subnav){ %>
+                            <li id="<%= key %>"><a class="fa <%= key %>" target="_blank" href="<%- subnav[key] %>" title="<%= key %>"></a></li>
+                            <% } %>
+                        </ul>
+                    </nav>
+                </header>
+            </div>
+        </nav>
+        <div class="body-wrap">
+            <% for(var i = 0 ; i < 3 ; i++){ %>
+            <%- include('./article.ejs') %>
+            <% } %>
+        </div>
+        <footer id="footer">
+            <div class="outer">
+                <div id="footer-info">
+                    <div class="footer-left">
+                        &copy; <%- new Date().getFullYear() %> <%- author %>
+                        <a href="http://www.miitbeian.gov.cn">渝ICP备15012713号</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="//7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="/js/main.js" type="text/javascript"></script>
+
+    <style>
+        body {
+            background: lightgray;
+        }
+
+        #container .left-col {
+            background: white;
+        }
+
+        .article-inner {
+            background: white;
+            margin-bottom: 1em;
+        }
+
+        .post-nav-button {
+            background: #ececec;
+        }
+
+        #header .header-nav .social #GitHub {
+            background-color: #bfd3ec;
+        }
+
+        #post-nav-button a {
+            background: rgba(215, 216, 215, .2);
+        }
+
+        .post-list {
+            background: white;
+        }
+    </style>
+    <div class="scroll" id="scroll">
+        <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+        <a href="#comments" title="查看评论"><i class="fa fa-comments-o"></i></a>
+        <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+    </div>
+    <script>
+        $(document).ready(function () {
+            if ($("#comments").length < 1) {
+                $("#scroll > a:nth-child(2)").hide();
+            }
+        });
+    </script>
+    <script src="//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <div id="progress"></div>
+</div>
+
+</body>
+</html>
