@@ -1,8 +1,8 @@
 {
-    "title": "",
-    "subtitle": "",
+    "title": "Alkali's Blog",
+    "subtitle": "Do one thing at a time, and do well.",
     "description": "",
-    "author": "",
+    "author": "Alkali",
     "language": "",
     "url": "http://yourstite.com",
     "root": "/",
@@ -10,5 +10,5 @@
     "public_dir": "public",
     "new_post_default_name": "title",
     "highlight": true,
-    "theme": "theme1"
+    "theme": "theme3"
 }
