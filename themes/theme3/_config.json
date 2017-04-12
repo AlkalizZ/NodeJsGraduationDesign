@@ -1,11 +1,11 @@
 {
     "menu": {
-        "home": "/",
-        "archives": "/archives/",
+        "home": "./",
+        "archives": "./archives/",
         "aboutme": "https://resume.alkalixin.cn/"
     },
-    "avatar": "/img/1.jpg",
-    "favicon": "/img/4.png",
+    "avatar": "./img/1.jpg",
+    "favicon": "./img/4.png",
     "subnav": {
         "Email": "mailto:i@alkalixin.cn",
         "GitHub": "https://github.com/AlkalizZ",
@@ -23,5 +23,6 @@
         "Hangeer": "http://www.hangeer1996.com/",
         "Zeroling": "https://www.zeroling.com/"
     },
-    "open_in_new": false
+    "open_in_new": false,
+    "posts": []
 }

@@ -1,24 +1,28 @@
-<article id="post-6-基本排序算法" class="article article-type-post" itemscope itemprop="blogPost">
+<article id="<%- key.title %>" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-meta">
         <a href="/2016/09/08/6-基本排序算法/" class="article-date">
-            <time datetime="2016-09-08T08:31:15.000Z" itemprop="datePublished">2016-09-08</time>
+            <time datetime="2016-09-08T08:31:15.000Z" itemprop="datePublished"><%- key.date %></time>
         </a>
     </div>
     <div class="article-inner">
         <input type="hidden" class="isFancy" />
         <header class="article-header">
-            <h1 itemprop="name"><a class="article-title" href="/2016/09/08/6-基本排序算法/">排序算法--基本排序算法</a></h1>
+            <h1 itemprop="name"><a class="article-title" href="/2016/09/08/6-基本排序算法/"><%- key.title %></a></h1>
         </header>
         <div class="article-entry" itemprop="articleBody">
-            <p>最近公司里没有安排什么事情，翻了翻<code>数据结构与算法</code>这本书，补足一下自己在算法方面的知识。</p>
+            <p><%- key.title %></p>
         </div>
         <div class="article-info article-info-index">
+            <% if(key.tags){ %>
             <div class="article-tag tagcloud">
                 <ul class="article-tag-list">
-                    <li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li>
-                    <li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li>
+                    <% for(i of key.tags){ %>
+                    <li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/<%- i %>/"><%- i %></a></li>
+                    <% } %>
                 </ul>
             </div>
+            <% } %>
+            
             <p class="article-more-link">
                 <a href="/2016/09/08/6-基本排序算法/#more">
                     <%= excerpt_link %>
