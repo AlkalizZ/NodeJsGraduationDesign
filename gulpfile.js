@@ -38,7 +38,7 @@ gulp.task('new', () => {
         if(err){
             console.log(err);
         }
-        index.generate(`./source/_post/${title}.md`, data);
+        index.generate(`./${_config.source_dir}/_post/${title}.md`, data);
     });
 
     var newDate = new Date();
@@ -47,7 +47,7 @@ gulp.task('new', () => {
         date: `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`,
         tags:[]
     };
-    index.generate(`./source/config/${title}.json`, JSON.stringify(postData, null, 2 ));
+    index.generate(`./${_config.source_dir}/config/${title}.json`, JSON.stringify(postData, null, 2 ));
 });
 
 // 生成public文件夹及文件
@@ -64,18 +64,18 @@ gulp.task('generate', () => {
 
     // 渲染markdown文件
     var resultArr = []; // 存放有效的md文件
-    var arr = fs.readdirSync('./source/_post/');
+    var arr = fs.readdirSync(`./${_config.source_dir}/_post/`);
     arr.forEach((value) => {
         if(value.split('.')[1] === 'md'){
             resultArr.push(value);
-            fs.readFile(`./source/_post/${value}`, 'utf-8', (err, data) => {
+            fs.readFile(`./${_config.source_dir}/_post/${value}`, 'utf-8', (err, data) => {
                 if (err) throw err;
-                // index.generate(`./public/${value.split('.')[0]}.html`, index.marked(data));
+                // index.generate(`./${_config.public_dir}/${value.split('.')[0]}.html`, index.marked(data));
             });
         }
     });
     for(var i = 0; i < resultArr.length; i++){
-        var postConfig = JSON.parse(fs.readFileSync(`./source/config/${resultArr[i].split('.')[0]}.json`, 'utf-8'));
+        var postConfig = JSON.parse(fs.readFileSync(`./${_config.source_dir}/config/${resultArr[i].split('.')[0]}.json`, 'utf-8'));
         themeConfig.posts.push(postConfig);
     }
 
@@ -84,17 +84,17 @@ gulp.task('generate', () => {
         .pipe(logger({
             after: `ejs模板渲染结束！`
         }))
-        .pipe(gulp.dest("./public"))
+        .pipe(gulp.dest(`./${_config.public_dir}`))
 
-    gulp.src([`./themes/${_config.theme}/source/background/**`,`./themes/${_config.theme}/source/fancybox/**`,`./themes/${_config.theme}/source/font-awesome/**`,`./themes/${_config.theme}/source/img/**`, `./themes/${_config.theme}/source/js/**`,`./themes/${_config.theme}/source/css/*.css`], {
-        base: `./themes/${_config.theme}/source`   //如果设置为 base: 'js' 将只会复制 js目录下文件, 其他文件会忽略
+    gulp.src([`./themes/${_config.theme}/${_config.source_dir}/background/**`,`./themes/${_config.theme}/${_config.source_dir}/fancybox/**`,`./themes/${_config.theme}/${_config.source_dir}/font-awesome/**`,`./themes/${_config.theme}/${_config.source_dir}/img/**`, `./themes/${_config.theme}/${_config.source_dir}/js/**`,`./themes/${_config.theme}/${_config.source_dir}/css/*.css`], {
+        base: `./themes/${_config.theme}/${_config.source_dir}`   //如果设置为 base: 'js' 将只会复制 js目录下文件, 其他文件会忽略
     })
     .pipe(logger({
         after: `相关文件复制结束`
     }))
-    .pipe(gulp.dest('./public'));
+    .pipe(gulp.dest(`./${_config.public_dir}`));
 
-    gulp.src(`./themes/${_config.theme}/source/css/style.styl`)
+    gulp.src(`./themes/${_config.theme}/${_config.source_dir}/css/style.styl`)
         .pipe(logger({
             after: `css生成结束！`
         }))
@@ -102,14 +102,14 @@ gulp.task('generate', () => {
             compress: true,
             'include css': true
         }))
-        .pipe(gulp.dest('./public/css/'));
+        .pipe(gulp.dest(`./${_config.public_dir}/css/`));
 });
 
 // 清除public文件夹
 gulp.task('clean', () => {
     var flag = index.fsExistsSync('./_config.json');    
     if(!flag) throw Error('未进行初始化');
-    index.clean('public');    
+    index.clean(`${_config.public_dir}`);    
 });
 
 gulp.task('uninit', () => {
