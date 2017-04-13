@@ -104,6 +104,7 @@ gulp.task('generate', () => {
                             }))
                             .pipe(gulp.dest('./public/' + postUrl))
             });
+            
         }
     });
 
