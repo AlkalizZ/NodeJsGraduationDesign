@@ -6,6 +6,7 @@ var ejs = require('ejs');
 var gulpEjs = require('gulp-ejs');
 var logger = require('gulp-logger');
 var stylus = require('gulp-stylus');
+var fm = require('front-matter');
 
 gulp.task('default', () => {
     // 默认任务
@@ -66,18 +67,19 @@ gulp.task('generate', () => {
     var resultArr = []; // 存放有效的md文件
     var arr = fs.readdirSync(`./${_config.source_dir}/_post/`);
     arr.forEach((value) => {
-        if(value.split('.')[1] === 'md'){
+        if(/.\.md$/.test(value)){
             resultArr.push(value);
             fs.readFile(`./${_config.source_dir}/_post/${value}`, 'utf-8', (err, data) => {
                 if (err) throw err;
-                // index.generate(`./${_config.public_dir}/${value.split('.')[0]}.html`, index.marked(data));
+                var content = fm(data);
+                var newDate = new Date(content.attributes.date);
+                content.attributes.qy = !content.attributes.qy? content.attributes.title :index.marked(content.attributes.qy);
+                content.attributes.date = `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`,
+                index.generate(`./${_config.public_dir}/${value.split(/\.md$/)[0]}.html`, index.marked(content.body));
+                themeConfig.posts.push(content.attributes);
             });
         }
     });
-    for(var i = 0; i < resultArr.length; i++){
-        var postConfig = JSON.parse(fs.readFileSync(`./${_config.source_dir}/config/${resultArr[i].split('.')[0]}.json`, 'utf-8'));
-        themeConfig.posts.push(postConfig);
-    }
 
     gulp.src(`./themes/${_config.theme}/layout/index.ejs`)
         .pipe(gulpEjs(themeConfig, {}, {ext:'.html'}))
@@ -106,9 +108,10 @@ gulp.task('generate', () => {
 });
 
 // 清除public文件夹
-gulp.task('clean', () => {
+gulp.task('clean', () => {    
     var flag = index.fsExistsSync('./_config.json');    
     if(!flag) throw Error('未进行初始化');
+    var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));    
     index.clean(`${_config.public_dir}`);    
 });
 
