@@ -1,0 +1,108 @@
+<article id="<%= key.title %>" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-meta">
+        <a href="<%- key.postUrl %>" class="article-date">
+            <time datetime="<%= key.date %>" itemprop="datePublished"><%= key.date %></time>
+        </a>
+    </div>
+    <div class="article-inner">
+        <header class="article-header">
+        <h1 class="article-title" itemprop="name">
+            <%= key.title %>
+        </h1>
+        </header>
+
+        <div class="article-info article-info-post">
+          <% if (key.tags && key.tags.length){ %>
+            <div class="article-tag tagcloud">
+              <ul class="article-tag-list">
+                <li class="article-tag-list-item"><a class="color1" href="./tags/JavaScript/" style="font-size: 12px;">JavaScript</a></li>
+                <li class="article-tag-list-item"><a class="color3" href="./tags/算法/" style="font-size: 12px;">算法</a></li>
+              </ul>
+            </div>
+          <% } %>
+          <div class="clearfix"></div>
+        </div>
+
+<!--文章主内容-->
+        <div class="article-entry" itemprop="articleBody">
+            <%- key.body %>
+        </div>
+      </div>
+        <% if (copyright){ %>
+        <div class="copyright">
+            <p><span>本文标题:</span><a href="<%- key.postUrl %>"><%= key.title %></a></p>
+            <p><span>文章作者:</span><a href="./" title="访问 <%= author %> 的个人博客"><%= author %></a></p>
+            <p><span>发布时间:</span><%= key.formatDate %></p>
+            <p>
+                <span>原始链接:</span><a class="post-url" href="<%- key.permalink %>" title="<%= key.title %>"><%= key.permalink %></a>
+                <span class="copy-path" data-clipboard-text="原文: <%= key.permalink %>　　作者: <%= author %>" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+                <script src="./js/clipboard.min.js"></script>
+                <script> var clipboard = new Clipboard('.copy-path'); </script>
+            </p>
+            <p>
+                <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+            </p>
+        </div>
+    <% } %>
+</article>
+<% if (key.toc && toc){ %>
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        <%- toc(key.content) %>
+    </div>
+    <style>
+        .left-col .switch-btn {
+            display: none;
+        }
+        .left-col .switch-area {
+            display: none;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+    <script src="//7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script>
+        var valueHide = "隐藏目录";
+        var valueShow = "显示目录";
+
+        if ($(".left-col").is(":hidden")) {
+            $("#tocButton").attr("value", valueShow);
+        }
+
+        $("#tocButton").click(function() {
+            if ($("#toc").is(":hidden")) {
+                $("#tocButton").attr("value", valueHide);
+                $("#toc").slideDown(320);
+                $(".switch-btn, .switch-area").fadeOut(300);
+            }
+            else {
+                $("#tocButton").attr("value", valueShow);
+                $("#toc").slideUp(350);
+                $(".switch-btn, .switch-area").fadeIn(500);
+            }
+        })
+
+        if ($(".toc").length < 1) {
+            $("#toc, #tocButton").hide();
+            $(".switch-btn, .switch-area").show();
+        }
+    </script>
+
+    <% if (theme.toc_nowrap) { %>
+        <style>
+            .toc {
+                white-space: nowrap;
+                overflow-x: hidden;
+            }
+        </style>
+
+        <script>
+            $(document).ready(function() {
+                $(".toc li a").mouseover(function() {
+                    var title = $(this).attr('href');
+                    $(this).attr("title", title);
+                });
+            })
+        </script>
+    <% } %>
+<% } %>
