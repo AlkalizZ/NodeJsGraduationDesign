@@ -22,6 +22,7 @@
   "dependencies": {
     "ejs": "^2.5.6",
     "express": "^4.15.2",
+    "front-matter": "^2.1.2",
     "gulp": "^3.9.1",
     "gulp-count": "^0.3.0",
     "gulp-ejs": "^3.0.1",
