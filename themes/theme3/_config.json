@@ -24,5 +24,8 @@
         "Zeroling": "https://www.zeroling.com/"
     },
     "open_in_new": false,
-    "posts": []
+    "posts": [],
+    "toc": false,
+    "toc_nowrap": false,
+    "copyright": true
 }
