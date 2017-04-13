@@ -153,9 +153,16 @@
             </div>
         </nav>
         <div class="body-wrap">
-            <% for(key of posts){ %>
-            <%- include('./article.ejs', key) %>
+            <% if(isIndex){ %>
+                <% for(key of posts){ %>
+                <%- include('./article.ejs', key) %>
+                <% } %>
+            <% }else{ %>
+                <% for(key of posts){ %>
+                <%- include('./singleArticle.ejs', key) %>
+                <% } %>                
             <% } %>
+
         </div>
         <footer id="footer">
             <div class="outer">
