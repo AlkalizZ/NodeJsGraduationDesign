@@ -1,6 +1,8 @@
 ---
-title: {{ title }}
-date: {{ date }}
+title: 
+date: 
+qy:
 tags:
+  -
 ---
 
