@@ -59,8 +59,10 @@ gulp.task('generate', () => {
     // 获取config配置文件
     var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
     var themeConfig = JSON.parse(fs.readFileSync(`./themes/${_config.theme}/_config.json`, 'utf-8'));
+    var singleThemeConfig = JSON.parse(fs.readFileSync(`./themes/${_config.theme}/_config.json`, 'utf-8'));
     for(key in _config){
         themeConfig[key] = _config[key];
+        singleThemeConfig[key] = _config[key];
     }
 
     // 渲染markdown文件
@@ -73,20 +75,47 @@ gulp.task('generate', () => {
                 if (err) throw err;
                 var content = fm(data);
                 var newDate = new Date(content.attributes.date);
-                content.attributes.qy = !content.attributes.qy? content.attributes.title :index.marked(content.attributes.qy);
-                content.attributes.date = `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`,
-                index.generate(`./${_config.public_dir}/${value.split(/\.md$/)[0]}.html`, index.marked(content.body));
+
+                // 根据日期和文章标题确定详细文章页面路径
+                var postUrl = `./${newDate.getFullYear()}/${newDate.getMonth() + 1}/${newDate.getDate()}/${value}`;
+
+                content.attributes.description = !content.attributes.description? content.attributes.title :index.marked(content.attributes.description);
+                content.attributes.date = `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`;
+
+                // 记录所有有效文档
                 themeConfig.posts.push(content.attributes);
+                themeConfig.postUrl = postUrl;
+                
+                // 详细文章页面数据
+                singleThemeConfig.isIndex = false;
+                singleThemeConfig.posts.push({
+                    postUrl: postUrl,
+                    title: value,
+                    formatDate: `${newDate.getFullYear()}年${newDate.getMonth() + 1}月${newDate.getDate()}日`,
+                    tags: content.attributes.tags,
+                    body: index.marked(content.body),
+                    toc: singleThemeConfig.toc,
+                    permalink: singleThemeConfig.url + postUrl
+                });
+                return gulp.src(`./themes/${_config.theme}/layout/index.ejs`)
+                            .pipe(gulpEjs(singleThemeConfig, {}, {ext:'.html'}))
+                            .pipe(logger({
+                                after: `${value}文章渲染结束！`
+                            }))
+                            .pipe(gulp.dest('./public/' + postUrl))
             });
         }
     });
 
+    // 主页渲染
+    themeConfig.isIndex = true;
     gulp.src(`./themes/${_config.theme}/layout/index.ejs`)
         .pipe(gulpEjs(themeConfig, {}, {ext:'.html'}))
         .pipe(logger({
-            after: `ejs模板渲染结束！`
+            after: `主页渲染结束！`
         }))
         .pipe(gulp.dest(`./${_config.public_dir}`))
+
 
     gulp.src([`./themes/${_config.theme}/${_config.source_dir}/background/**`,`./themes/${_config.theme}/${_config.source_dir}/fancybox/**`,`./themes/${_config.theme}/${_config.source_dir}/font-awesome/**`,`./themes/${_config.theme}/${_config.source_dir}/img/**`, `./themes/${_config.theme}/${_config.source_dir}/js/**`,`./themes/${_config.theme}/${_config.source_dir}/css/*.css`], {
         base: `./themes/${_config.theme}/${_config.source_dir}`   //如果设置为 base: 'js' 将只会复制 js目录下文件, 其他文件会忽略
