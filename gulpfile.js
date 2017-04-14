@@ -68,11 +68,35 @@ gulp.task('generate', () => {
     // 渲染markdown文件
     var resultArr = []; // 存放有效的md文件
     var arr = fs.readdirSync(`./${_config.source_dir}/_post/`);
-    arr.forEach((value) => {
-        if(/.\.md$/.test(value)){
-            resultArr.push(value);
-            fs.readFile(`./${_config.source_dir}/_post/${value}`, 'utf-8', (err, data) => {
-                if (err) throw err;
+
+    arr = arr.filter((value) => {
+        return /.\.md$/.test(value);
+    });
+
+    console.log(arr);
+    let readFilePromiseList = arr.map((value) => {
+
+        resultArr.push(value);
+
+        return new Promise((resolve, reject) => {
+            let file = `./${_config.source_dir}/_post/${value}`;
+            
+            fs.readFile(file, 'utf-8', (err, data) => {
+                if(err) return reject(err);
+                resolve({
+                    value,
+                    data
+                });
+            });
+        });
+    });
+
+
+    Promise.all(readFilePromiseList)
+        .then((mdList) => {
+            mdList.forEach((item) => {
+                var value = item.value;
+                var data = item.data;
                 var content = fm(data);
                 var newDate = new Date(content.attributes.date);
 
@@ -98,15 +122,55 @@ gulp.task('generate', () => {
                     permalink: singleThemeConfig.url + postUrl
                 });
                 gulp.src(`./themes/${_config.theme}/layout/index.ejs`)
-                            .pipe(gulpEjs(singleThemeConfig, {}, {ext:'.html'}))
-                            .pipe(logger({
-                                after: `${value}文章渲染结束！`
-                            }))
-                            .pipe(gulp.dest('./${_config.public_dir}/' + postUrl))
-            });
+                    .pipe(gulpEjs(singleThemeConfig, {}, {ext:'.html'}))
+                    .pipe(logger({
+                        after: `${value}文章渲染结束！`
+                    }))
+                    .pipe(gulp.dest(`./${_config.public_dir}/` + postUrl))
+            })
+            
+        })
+        .catch(console.error);
 
-        }
-    });
+    // arr.forEach((value) => {
+    //     if(/.\.md$/.test(value)){
+    //         resultArr.push(value);
+    //         fs.readFile(`./${_config.source_dir}/_post/${value}`, 'utf-8', (err, data) => {
+    //             if (err) throw err;
+    //             var content = fm(data);
+    //             var newDate = new Date(content.attributes.date);
+
+    //             // 根据日期和文章标题确定详细文章页面路径
+    //             var postUrl = `./${newDate.getFullYear()}/${newDate.getMonth() + 1}/${newDate.getDate()}/${value}`;
+
+    //             content.attributes.description = !content.attributes.description? content.attributes.title :index.marked(content.attributes.description);
+    //             content.attributes.date = `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`;
+
+    //             // 记录所有有效文档
+    //             themeConfig.posts.push(content.attributes);
+    //             themeConfig.postUrl = postUrl;
+                
+    //             // 详细文章页面数据
+    //             singleThemeConfig.isIndex = false;
+    //             singleThemeConfig.posts.push({
+    //                 postUrl: postUrl,
+    //                 title: value,
+    //                 formatDate: `${newDate.getFullYear()}年${newDate.getMonth() + 1}月${newDate.getDate()}日`,
+    //                 tags: content.attributes.tags,
+    //                 body: index.marked(content.body),
+    //                 toc: singleThemeConfig.toc,
+    //                 permalink: singleThemeConfig.url + postUrl
+    //             });
+    //             gulp.src(`./themes/${_config.theme}/layout/index.ejs`)
+    //                         .pipe(gulpEjs(singleThemeConfig, {}, {ext:'.html'}))
+    //                         .pipe(logger({
+    //                             after: `${value}文章渲染结束！`
+    //                         }))
+    //                         .pipe(gulp.dest('./${_config.public_dir}/' + postUrl))
+    //         });
+
+    //     }
+    // });
 
     // 主页渲染
     themeConfig.isIndex = true;
