@@ -97,14 +97,14 @@ gulp.task('generate', () => {
                     toc: singleThemeConfig.toc,
                     permalink: singleThemeConfig.url + postUrl
                 });
-                return gulp.src(`./themes/${_config.theme}/layout/index.ejs`)
+                gulp.src(`./themes/${_config.theme}/layout/index.ejs`)
                             .pipe(gulpEjs(singleThemeConfig, {}, {ext:'.html'}))
                             .pipe(logger({
                                 after: `${value}文章渲染结束！`
                             }))
-                            .pipe(gulp.dest('./public/' + postUrl))
+                            .pipe(gulp.dest('./${_config.public_dir}/' + postUrl))
             });
-            
+
         }
     });
 
