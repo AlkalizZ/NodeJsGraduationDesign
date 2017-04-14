@@ -15,7 +15,7 @@ gulp.task('default', () => {
     console.log('this is default task');
 });
 //TODO 生成基础文件夹及文件
-gulp.task('init', () => {
+gulp.task('init', (cb) => {
 
     var flag = index.fsExistsSync('./_config.json');
     if (flag) throw Error('已经初始化');
@@ -23,12 +23,12 @@ gulp.task('init', () => {
         if (err) {
             console.log(err);
         }
-        index.generate('./_config.json', data);
+        index.generate('./_config.json', data, cb);
     });
 });
 
 // 新建md文件
-gulp.task('new', () => {
+gulp.task('new', (cb) => {
     var flag = index.fsExistsSync('./_config.json');
     if (!flag) throw Error('未进行初始化');
 
@@ -39,14 +39,11 @@ gulp.task('new', () => {
     var title = argv.title || _config.new_post_default_name;
     var tags = argv.tags;
     var description = argv.description;
-    fs.readFile('./assets/scaffolds/post.md', 'utf-8', (err, data) => {
-        if (err) {
-            console.log(err);
-        }
+    var data = fs.readFile('./assets/scaffolds/post.md', 'utf-8');
 
-        var newDate = new Date();
+    var newDate = new Date();
 
-        var postData = `---
+    var postData = `---
 title: ${title}
 date: ${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}
 tags:
@@ -56,22 +53,15 @@ tags:
 description: description in there
 ---
 `;
-        // var content = fm(data);
-        // content.attributes.title = title;
-        // content.attributes.date = `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`;
-        // content.attributes.tags = tags;
-        // content.attributes.description = description;
-        
-        // console.log(description)
-        index.generate(`./${_config.source_dir}/_post/${title}.md`, postData);
+    // var content = fm(data);
+    // content.attributes.title = title;
+    // content.attributes.date = `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`;
+    // content.attributes.tags = tags;
+    // content.attributes.description = description;
 
-        var stream1 = gulp.src('./public')
-                          .pipe(logger());
-        var stream = concat(stream1);
-        return stream;
-    });
+    // console.log(description)
 
-    // index.generate(`./${_config.source_dir}/config/${title}.json`, JSON.stringify(postData, null, 2));
+    index.generate(`./${_config.source_dir}/_post/${title}.md`, postData, cb);  // cb为gulp-task定义的回调函数，调用时就证明该任务已经结束
 });
 
 // 生成public文件夹及文件
