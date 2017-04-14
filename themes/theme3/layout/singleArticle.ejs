@@ -1,108 +1,330 @@
-<article id="<%= key.title %>" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-meta">
-        <a href="<%- key.postUrl %>" class="article-date">
-            <time datetime="<%= key.date %>" itemprop="datePublished"><%= key.date %></time>
-        </a>
-    </div>
-    <div class="article-inner">
-        <header class="article-header">
-        <h1 class="article-title" itemprop="name">
-            <%= key.title %>
-        </h1>
-        </header>
-
-        <div class="article-info article-info-post">
-          <% if (key.tags && key.tags.length){ %>
-            <div class="article-tag tagcloud">
-              <ul class="article-tag-list">
-                <li class="article-tag-list-item"><a class="color1" href="./tags/JavaScript/" style="font-size: 12px;">JavaScript</a></li>
-                <li class="article-tag-list-item"><a class="color3" href="./tags/算法/" style="font-size: 12px;">算法</a></li>
-              </ul>
-            </div>
-          <% } %>
-          <div class="clearfix"></div>
-        </div>
-
-<!--文章主内容-->
-        <div class="article-entry" itemprop="articleBody">
-            <%- key.body %>
-        </div>
-      </div>
-        <% if (copyright){ %>
-        <div class="copyright">
-            <p><span>本文标题:</span><a href="<%- key.postUrl %>"><%= key.title %></a></p>
-            <p><span>文章作者:</span><a href="./" title="访问 <%= author %> 的个人博客"><%= author %></a></p>
-            <p><span>发布时间:</span><%= key.formatDate %></p>
-            <p>
-                <span>原始链接:</span><a class="post-url" href="<%- key.permalink %>" title="<%= key.title %>"><%= key.permalink %></a>
-                <span class="copy-path" data-clipboard-text="原文: <%= key.permalink %>　　作者: <%= author %>" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
-                <script src="./js/clipboard.min.js"></script>
-                <script> var clipboard = new Clipboard('.copy-path'); </script>
-            </p>
-            <p>
-                <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
-            </p>
-        </div>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="<%= title %>">
+    <% if(url){ %>
+    <meta property="og:url" content="<%= url %>">
     <% } %>
-</article>
-<% if (key.toc && toc){ %>
-    <div id="toc" class="toc-article">
-        <strong class="toc-title">文章目录</strong>
-        <%- toc(key.content) %>
-    </div>
-    <style>
-        .left-col .switch-btn {
-            display: none;
-        }
-        .left-col .switch-area {
-            display: none;
-        }
-    </style>
+    <meta property="og:site_name" content="<%= title %>">
+    <meta property="og:description">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="<%= title %>">
+    <meta name="twitter:description">
+    <link rel="alternative" href="./atom.xml" title="<%= title %>" type="application/atom+xml">
+    <link rel="icon" href="<%= favicon %>">
+    <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" type="text/css">
+    <link href="//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <link rel="stylesheet" href="./font-awesome/css/font-awesome.min.css">
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+    <link rel="stylesheet" href="./fancybox/jquery.fancybox.css">
 
-    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
-    <script src="//7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
     <script>
-        var valueHide = "隐藏目录";
-        var valueShow = "显示目录";
-
-        if ($(".left-col").is(":hidden")) {
-            $("#tocButton").attr("value", valueShow);
-        }
-
-        $("#tocButton").click(function() {
-            if ($("#toc").is(":hidden")) {
-                $("#tocButton").attr("value", valueHide);
-                $("#toc").slideDown(320);
-                $(".switch-btn, .switch-area").fadeOut(300);
-            }
-            else {
-                $("#tocButton").attr("value", valueShow);
-                $("#toc").slideUp(350);
-                $(".switch-btn, .switch-area").fadeIn(500);
-            }
-        })
-
-        if ($(".toc").length < 1) {
-            $("#toc, #tocButton").hide();
-            $(".switch-btn, .switch-area").show();
-        }
+        var yiliaConfig = {
+          animate: <%= animate %>,
+          open_in_new: <%= open_in_new %>
+      }
     </script>
 
-    <% if (theme.toc_nowrap) { %>
-        <style>
-            .toc {
-                white-space: nowrap;
-                overflow-x: hidden;
-            }
-        </style>
+    <link rel="stylesheet" href="./css/highlight-zenburn.css">
+</head>
+<body>
+<div id="container">
+    <div class="left-col">
+        <div class="overlay"></div>
+        <div class="intrude-less">
+            <header id="header" class="inner">
+                <a href="./" class="profilepic"><img lazy-src="<%= avatar %>" class="js-avatar"></a>
+                <hgroup>
+                    <h1 class="header-author"><a href="./"><%= author %></a></h1>
+                </hgroup>
+                <p class="header-subtitle"><%= subtitle %></p>
+                <div id="switch-btn" class="switch-btn">
+                    <div class="icon">
+                        <div class="icon-ctn">
+                            <div class="icon-wrap icon-house" data-idx="0">
+                                <div class="birdhouse"></div>
+                                <div class="birdhouse_holes"></div>
+                            </div>
+                            <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                                <div class="ribbon"></div>
+                            </div>
 
-        <script>
-            $(document).ready(function() {
-                $(".toc li a").mouseover(function() {
-                    var title = $(this).attr('href');
-                    $(this).attr("title", title);
-                });
-            })
-        </script>
-    <% } %>
-<% } %>
+                            <div class="icon-wrap icon-link hide" data-idx="2">
+                                <div class="loopback_l"></div>
+                                <div class="loopback_r"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tips-box hide">
+                        <div class="tips-arrow"></div>
+                        <ul class="tips-inner">
+                            <li>菜单</li>
+                            <li>标签</li>
+                            <li>友情链接</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="switch-area" class="switch-area">
+                    <div class="switch-wrap">
+                        <section class="switch-part switch-part1">
+                            <nav class="header-menu">
+                                <ul>
+                                    <% for(key in menu){ %>
+                                    <li><a href="<%= menu[key] %>"><%= key %></a></li>
+                                    <% } %>
+                                </ul>
+                            </nav>
+                            <nav class="header-nav">
+                                <ul class="social">
+                                    <% for(key in subnav){ %>
+                                    <li id="<%= key %>"><a class="fa <%= key %>" target="_blank"
+                                                           href="<%- subnav[key] %>" title="<%= key %>"></a></li>
+                                    <% } %>
+                                </ul>
+                            </nav>
+                        </section>
+
+                        <section class="switch-part switch-part2">
+                            <div class="widget tagcloud" id="js-tagcloud">
+                                <% for (key of posts){%>
+                                    <% if(posts[0].tags){%>
+                                        <% for (i of posts[0].tags){%>
+                                <a href="./tags/<%- i %>/" style="font-size: 10px;"><%- i %></a> 
+                                        <% } %>
+                                    <% } %>                                    
+                                <% } %>
+                            </div>
+                        </section>
+
+                        <section class="switch-part switch-part3">
+                            <div id="js-friends">
+                                <% for(key in friends){ %>
+                                <a target="_blank" class="main-nav-link switch-friends-link"
+                                   href="<%= friends[key] %>"><%= key %></a>
+                                <% } %>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </header>
+        </div>
+    </div>
+    <div class="mid-col">
+        <nav id="mobile-nav">
+            <div class="overlay">
+                <div class="slider-trigger"></div>
+                <h1 class="header-author js-mobile-header hide"><a href="./" title="回到主页"><%= title %></a></h1>
+            </div>
+            <div class="intrude-less">
+                <header id="header" class="inner">
+                    <a href="./" class="profilepic">
+
+                        <img lazy-src="<%- avatar %>" class="js-avatar">
+
+                    </a>
+                    <hgroup>
+                        <h1 class="header-author"><a href="./" title="回到主页"><%= title %></a></h1>
+                    </hgroup>
+
+                    <p class="header-subtitle"><%= subtitle %></p>
+
+                    <nav class="header-menu">
+                        <ul>
+                            <% for(key in menu){ %>
+                            <li><a href="<%= menu[key] %>"><%= key %></a></li>
+                            <% } %>
+                            <div class="clearfix"></div>
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            <% for(key in subnav){ %>
+                            <li id="<%= key %>"><a class="fa <%= key %>" target="_blank" href="<%- subnav[key] %>" title="<%= key %>"></a></li>
+                            <% } %>
+                        </ul>
+                    </nav>
+                </header>
+            </div>
+        </nav>
+        <div class="body-wrap">
+            <article id="<%= posts[0].title %>" class="article article-type-post" itemscope itemprop="blogPost">
+                <div class="article-meta">
+                    <a href="<%- posts[0].postUrl %>" class="article-date">
+                        <time datetime="<%= posts[0].formatDate %>" itemprop="datePublished"><%= posts[0].formatDate %></time>
+                    </a>
+                </div>
+                <div class="article-inner">
+                    <header class="article-header">
+                    <h1 class="article-title" itemprop="name">
+                        <%= posts[0].title %>
+                    </h1>
+                    </header>
+
+                    <div class="article-info article-info-post">
+                    <% if (posts[0].tags && posts[0].tags.length){ %>
+                        <div class="article-tag tagcloud">
+                        <ul class="article-tag-list">
+                            <% for(key of posts[0].tags){ %>
+                            <li class="article-tag-list-item"><a class="color<%- posts[0].tagClass %>" href="./tags/<%- key %>" style="font-size: 12px;"><%- key %></a></li>           
+                            <% } %>
+                        </ul>
+                        </div>
+                    <% } %>
+                    <div class="clearfix"></div>
+                    </div>
+
+            <!--文章主内容-->
+                    <div class="article-entry" itemprop="articleBody">
+                        <%- posts[0].body %>
+                    </div>
+                </div>
+                    <% if (copyright){ %>
+                    <div class="copyright">
+                        <p><span>本文标题:</span><a href="<%- posts[0].postUrl %>"><%= posts[0].title %></a></p>
+                        <p><span>文章作者:</span><a href="./" title="访问 <%= author %> 的个人博客"><%= author %></a></p>
+                        <p><span>发布时间:</span><%= posts[0].formatDate %></p>
+                        <p>
+                            <span>原始链接:</span><a class="post-url" href="<%- posts[0].permalink %>" title="<%= posts[0].title %>"><%= posts[0].permalink %></a>
+                            <span class="copy-path" data-clipboard-text="原文: <%= posts[0].permalink %>　　作者: <%= author %>" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+                            <script src="./js/clipboard.min.js"></script>
+                            <script> var clipboard = new Clipboard('.copy-path'); </script>
+                        </p>
+                        <p>
+                            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+                        </p>
+                    </div>
+                <% } %>
+            </article>
+            <% if (posts[0].toc && toc){ %>
+                <div id="toc" class="toc-article">
+                    <strong class="toc-title">文章目录</strong>
+                    <%- toc(posts[0].content) %>
+                </div>
+                <style>
+                    .left-col .switch-btn {
+                        display: none;
+                    }
+                    .left-col .switch-area {
+                        display: none;
+                    }
+                </style>
+
+                <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+                <script src="//7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+                <script>
+                    var valueHide = "隐藏目录";
+                    var valueShow = "显示目录";
+
+                    if ($(".left-col").is(":hidden")) {
+                        $("#tocButton").attr("value", valueShow);
+                    }
+
+                    $("#tocButton").click(function() {
+                        if ($("#toc").is(":hidden")) {
+                            $("#tocButton").attr("value", valueHide);
+                            $("#toc").slideDown(320);
+                            $(".switch-btn, .switch-area").fadeOut(300);
+                        }
+                        else {
+                            $("#tocButton").attr("value", valueShow);
+                            $("#toc").slideUp(350);
+                            $(".switch-btn, .switch-area").fadeIn(500);
+                        }
+                    })
+
+                    if ($(".toc").length < 1) {
+                        $("#toc, #tocButton").hide();
+                        $(".switch-btn, .switch-area").show();
+                    }
+                </script>
+
+                <% if (theme.toc_nowrap) { %>
+                    <style>
+                        .toc {
+                            white-space: nowrap;
+                            overflow-x: hidden;
+                        }
+                    </style>
+
+                    <script>
+                        $(document).ready(function() {
+                            $(".toc li a").mouseover(function() {
+                                var title = $(this).attr('href');
+                                $(this).attr("title", title);
+                            });
+                        })
+                    </script>
+                <% } %>
+            <% } %>
+
+        </div>
+        <footer id="footer">
+            <div class="outer">
+                <div id="footer-info">
+                    <div class="footer-left">
+                        &copy; <%- new Date().getFullYear() %> <%- author %>
+                        <a href="http://www.miitbeian.gov.cn">渝ICP备15012713号</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="//7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="./js/main.js" type="text/javascript"></script>
+
+    <style>
+        body {
+            background: lightgray;
+        }
+
+        #container .left-col {
+            background: white;
+        }
+
+        .article-inner {
+            background: white;
+            margin-bottom: 1em;
+        }
+
+        .post-nav-button {
+            background: #ececec;
+        }
+
+        #header .header-nav .social #GitHub {
+            background-color: #bfd3ec;
+        }
+
+        #post-nav-button a {
+            background: rgba(215, 216, 215, .2);
+        }
+
+        .post-list {
+            background: white;
+        }
+    </style>
+    <div class="scroll" id="scroll">
+        <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+        <a href="#comments" title="查看评论"><i class="fa fa-comments-o"></i></a>
+        <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+    </div>
+    <script>
+        $(document).ready(function () {
+            if ($("#comments").length < 1) {
+                $("#scroll > a:nth-child(2)").hide();
+            }
+        });
+    </script>
+    <script src="//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <div id="progress"></div>
+</div>
+
+</body>
+</html>
