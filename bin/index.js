@@ -8,8 +8,10 @@ var fileOperations =  require('../lib/fileOperations');
 var clean = require('../lib/clean');
 // var marked = require('../lib/parse');
 var marked = require('../lib/P');
+var getRandom = require('../lib/getRandom');
 
 exports.clean = clean;
 exports.generate = generate;
 exports.marked = marked;
 exports.fsExistsSync = fileOperations.fsExistsSync;
+exports.getRandom = getRandom;
