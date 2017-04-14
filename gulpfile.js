@@ -37,20 +37,41 @@ gulp.task('new', () => {
 
     var argv = require('minimist')(process.argv.slice(2));
     var title = argv.title || _config.new_post_default_name;
+    var tags = argv.tags;
+    var description = argv.description;
     fs.readFile('./assets/scaffolds/post.md', 'utf-8', (err, data) => {
         if (err) {
             console.log(err);
         }
-        index.generate(`./${_config.source_dir}/_post/${title}.md`, data);
+
+        var newDate = new Date();
+
+        var postData = `---
+title: ${title}
+date: ${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}
+tags:
+  - 
+  - 
+  - 
+description: description in there
+---
+`;
+        // var content = fm(data);
+        // content.attributes.title = title;
+        // content.attributes.date = `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`;
+        // content.attributes.tags = tags;
+        // content.attributes.description = description;
+        
+        // console.log(description)
+        index.generate(`./${_config.source_dir}/_post/${title}.md`, postData);
+
+        var stream1 = gulp.src('./public')
+                          .pipe(logger());
+        var stream = concat(stream1);
+        return stream;
     });
 
-    var newDate = new Date();
-    var postData = {
-        title: title,
-        date: `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`,
-        tags: []
-    };
-    index.generate(`./${_config.source_dir}/config/${title}.json`, JSON.stringify(postData, null, 2));
+    // index.generate(`./${_config.source_dir}/config/${title}.json`, JSON.stringify(postData, null, 2));
 });
 
 // 生成public文件夹及文件
@@ -74,70 +95,6 @@ gulp.task('generate', () => {
         return /.\.md$/.test(value);
     });
 
-    // var readFilePromiseList = arr.map((value) => {
-
-    //     resultArr.push(value);
-
-    //     return new Promise((resolve, reject) => {
-    //         var file = `./${_config.source_dir}/_post/${value}`;
-
-    //         fs.readFile(file, 'utf-8', (err, data) => {
-    //             if (err) return reject(err);
-    //             resolve({
-    //                 value,
-    //                 data
-    //             });
-    //         });
-    //     });
-    // });
-
-
-    // Promise.all(readFilePromiseList)
-    //     .then((mdList) => {
-    //         mdList.forEach((item) => {
-    //             var value = item.value;
-    //             var data = item.data;
-    //             var content = fm(data);
-    //             var newDate = new Date(content.attributes.date);
-
-    //             // 根据日期和文章标题确定详细文章页面路径
-    //             var postUrl = `./${newDate.getFullYear()}/${newDate.getMonth() + 1}/${newDate.getDate()}/${value}`;
-
-    //             content.attributes.description = !content.attributes.description ? content.attributes.title : index.marked(content.attributes.description);
-    //             content.attributes.date = `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`;
-
-    //             // 记录所有有效文档
-    //             themeConfig.posts.push(content.attributes);
-    //             themeConfig.postUrl = postUrl;
-
-    //             // 详细文章页面数据
-    //             singleThemeConfig.isIndex = false;
-    //             singleThemeConfig.posts.push({
-    //                 postUrl: postUrl,
-    //                 title: value,
-    //                 formatDate: `${newDate.getFullYear()}年${newDate.getMonth() + 1}月${newDate.getDate()}日`,
-    //                 tags: content.attributes.tags,
-    //                 body: index.marked(content.body),
-    //                 toc: singleThemeConfig.toc,
-    //                 permalink: singleThemeConfig.url + postUrl
-    //             });
-    //             // var _stream = gulp.src(`./themes/${_config.theme}/layout/index.ejs`)
-    //             // .pipe(gulpEjs(singleThemeConfig, {}, {ext:'.html'}))
-    //             // .pipe(logger({
-    //             //     after: `${value}文章渲染结束！`
-    //             // }))
-    //             // .pipe(gulp.dest(`./${_config.public_dir}/` + postUrl))
-
-    //             // streamArr.push(_stream);
-
-    //         });
-    //         // 对主页的文章按照时间先后顺序排序
-    //         themeConfig.posts.sort((a, b) => {
-    //             return Date.parse(b.date) - Date.parse(a.date);
-    //         })
-    //     })
-    //     .catch(console.error);
-
     arr.forEach((value) => {
         var data = fs.readFileSync(`./${_config.source_dir}/_post/${value}`, 'utf-8');
         var content = fm(data);
@@ -148,7 +105,6 @@ gulp.task('generate', () => {
         }
 
         // 根据日期和文章标题确定详细文章页面路径
-        // var postUrl = `./${newDate.getFullYear()}/${newDate.getMonth() + 1}/${newDate.getDate()}/${value}`;
         var postUrl = `./${value.split(/\.md$/)[0]}.html`;
 
         content.attributes.description = !content.attributes.description ? content.attributes.title : index.marked(content.attributes.description);
