@@ -102,7 +102,7 @@ gulp.task('generate', () => {
                             .pipe(logger({
                                 after: `${value}文章渲染结束！`
                             }))
-                            .pipe(gulp.dest('./${_config.public_dir}/' + postUrl))
+                            .pipe(gulp.dest(`./${_config.public_dir}/` + postUrl))
             });
 
         }
