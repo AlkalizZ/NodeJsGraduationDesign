@@ -15,6 +15,7 @@ gulp clean
 
 ## 其它配置
 如：
+``` md
 ---
 title: VPS主机上安装node.js
 date: 2016-02-03
@@ -24,3 +25,4 @@ tags:
   - dashes
 description: VPS我是在[腾讯云](http://www.qcloud.com/)上买的，校园认证之后只要**￥1/月**，挺划算的。
 ---
+```
