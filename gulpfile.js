@@ -74,12 +74,12 @@ gulp.task('generate', () => {
     });
 
     console.log(arr);
-    let readFilePromiseList = arr.map((value) => {
+    var readFilePromiseList = arr.map((value) => {
 
         resultArr.push(value);
 
         return new Promise((resolve, reject) => {
-            let file = `./${_config.source_dir}/_post/${value}`;
+            var file = `./${_config.source_dir}/_post/${value}`;
             
             fs.readFile(file, 'utf-8', (err, data) => {
                 if(err) return reject(err);
@@ -127,8 +127,11 @@ gulp.task('generate', () => {
                         after: `${value}文章渲染结束！`
                     }))
                     .pipe(gulp.dest(`./${_config.public_dir}/` + postUrl))
+            });
+            // 对主页的文章按照时间先后顺序排序
+            themeConfig.posts.sort((a, b) => {
+                return Date.parse(b.date) - Date.parse(a.date);
             })
-            
         })
         .catch(console.error);
 
