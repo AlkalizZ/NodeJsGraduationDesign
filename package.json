@@ -27,7 +27,9 @@
     "gulp-count": "^0.3.0",
     "gulp-ejs": "^3.0.1",
     "gulp-logger": "0.0.2",
+    "gulp-rename": "^1.2.2",
     "gulp-stylus": "^2.6.0",
-    "minimist": "^1.2.0"
+    "minimist": "^1.2.0",
+    "pipe-concat": "0.0.3"
   }
 }
