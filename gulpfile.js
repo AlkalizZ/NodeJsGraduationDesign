@@ -107,7 +107,7 @@ gulp.task('generate', () => {
         // 详细文章页面数据
         singleThemeConfig.posts.push({
             postUrl: postUrl,
-            title: value,
+            title: content.attributes.title,
             formatDate: `${newDate.getFullYear()}年${newDate.getMonth() + 1}月${newDate.getDate()}日`,
             tags: content.attributes.tags,
             body: index.marked(content.body),
