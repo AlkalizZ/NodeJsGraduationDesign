@@ -7,7 +7,7 @@ gulp init
 ## 新建文档
 gulp new --title [title]
 
-## 生成页面
+## 生成静态页面
 gulp generate
 
 ## 清空静态页面
