@@ -27,3 +27,4 @@ description: VPS我是在[腾讯云](http://www.qcloud.com/)上买的，校园�
 ---
 ```
 > 注意： tags里的`-`应该是两个`空格`而非一个`tab`，否则在渲染过程中会报错。
+> 在tags-description中加入你想显示在主页里的`md`语句。
