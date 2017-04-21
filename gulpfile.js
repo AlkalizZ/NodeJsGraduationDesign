@@ -1,5 +1,4 @@
 var gulp = require('gulp');
-var count = require('gulp-count');
 var index = require('./bin/index');
 var fs = require('fs');
 var ejs = require('ejs');
@@ -53,13 +52,6 @@ tags:
 description: description in there
 ---
 `;
-    // var content = fm(data);
-    // content.attributes.title = title;
-    // content.attributes.date = `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`;
-    // content.attributes.tags = tags;
-    // content.attributes.description = description;
-
-    // console.log(description)
 
     index.generate(`./${_config.source_dir}/_post/${title}.md`, postData, cb);  // cb为gulp-task定义的回调函数，调用时就证明该任务已经结束
 });
@@ -95,7 +87,7 @@ gulp.task('generate', () => {
         }
 
         // 根据日期和文章标题确定详细文章页面路径
-        var postUrl = `./${value.split(/\.md$/)[0]}.html`;
+        var postUrl = `./${content.attributes.title}.html`;
 
         content.attributes.description = !content.attributes.description ? content.attributes.title : index.marked(content.attributes.description);
         content.attributes.date = `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`;
@@ -105,6 +97,7 @@ gulp.task('generate', () => {
         themeConfig.posts.push(content.attributes);
 
         // 详细文章页面数据
+        singleThemeConfig.isIndex = false;
         singleThemeConfig.posts.push({
             postUrl: postUrl,
             title: content.attributes.title,
@@ -115,12 +108,13 @@ gulp.task('generate', () => {
             permalink: singleThemeConfig.url + postUrl,
             tagClass: index.getRandom(1, 5)
         });
-        var _stream = gulp.src(`./themes/${_config.theme}/layout/singleArticle.ejs`)
+        // var _stream = gulp.src(`./themes/${_config.theme}/layout/singleArticle.ejs`)
+        var _stream = gulp.src(`./themes/${_config.theme}/layout/index.ejs`)
             .pipe(gulpEjs(singleThemeConfig, {}, { ext: '.html' }))
             .pipe(logger({
                 after: `${value}文章渲染结束！`
             }))
-            .pipe(rename(`${value.split(/\.md$/)[0]}.html`))
+            .pipe(rename(`${content.attributes.title}.html`))
             .pipe(gulp.dest(`./${_config.public_dir}`));
         streamArr.push(_stream);
         // 对主页的文章按照时间先后顺序排序
@@ -129,6 +123,7 @@ gulp.task('generate', () => {
         })
     });
     // 主页渲染
+    themeConfig.isIndex = true;
     var stream1 = gulp.src(`./themes/${_config.theme}/layout/index.ejs`)
         .pipe(gulpEjs(themeConfig, {}, { ext: '.html' }))
         .pipe(logger({
@@ -171,4 +166,9 @@ gulp.task('uninit', () => {
     var flag = index.fsExistsSync('./_config.json');
     if (!flag) throw Error('未进行初始化');
     index.clean('./_config.json');
+});
+
+// 利用express进行监听
+gulp.task('run', (cb) => {
+
 })
