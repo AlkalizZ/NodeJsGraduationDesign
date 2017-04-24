@@ -8,6 +8,9 @@ var stylus = require('gulp-stylus');
 var fm = require('front-matter');
 var concat = require('pipe-concat');
 var rename = require('gulp-rename');
+var express = require('express');
+var path = require('path')
+var c = require('child_process')
 
 gulp.task('default', () => {
     // 默认任务
@@ -86,7 +89,7 @@ gulp.task('generate', () => {
             singleThemeConfig[key] = _config[key];
         }
 
-        // 根据日期和文章标题确定详细文章页面路径
+        // 详细文章页面路径为根目录
         var postUrl = `./${content.attributes.title}.html`;
 
         content.attributes.description = !content.attributes.description ? content.attributes.title : index.marked(content.attributes.description);
@@ -114,7 +117,11 @@ gulp.task('generate', () => {
             .pipe(logger({
                 after: `${value}文章渲染结束！`
             }))
-            .pipe(rename(`${content.attributes.title}.html`))
+            .pipe(rename({
+                dirname: "/",
+                basename: `${content.attributes.title}`,
+                extname: ".html"
+            }))
             .pipe(gulp.dest(`./${_config.public_dir}`));
         streamArr.push(_stream);
         // 对主页的文章按照时间先后顺序排序
@@ -169,6 +176,15 @@ gulp.task('uninit', () => {
 });
 
 // 利用express进行监听
-gulp.task('run', (cb) => {
+gulp.task('run',['generate'], (cb) => {
+    var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
+    var argv = require('minimist')(process.argv.slice(2));
+    var port = argv.port || 8888;
+    var app = express();
+    app.use(express.static(`${_config.public_dir}`));
+    app.listen(port);
+    console.log(`listening at port ${port}`);
 
+    c.exec(`open http://localhost:${port}/`);
+    cb();
 })
