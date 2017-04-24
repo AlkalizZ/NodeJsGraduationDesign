@@ -20,11 +20,11 @@
   },
   "homepage": "https://github.com/AlkalizZ/NodeJsGraduationDesign#readme",
   "dependencies": {
+    "child_process": "^1.0.2",
     "ejs": "^2.5.6",
     "express": "^4.15.2",
     "front-matter": "^2.1.2",
     "gulp": "^3.9.1",
-    "gulp-count": "^0.3.0",
     "gulp-ejs": "^3.0.1",
     "gulp-logger": "0.0.2",
     "gulp-rename": "^1.2.2",
