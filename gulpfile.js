@@ -16,7 +16,7 @@ gulp.task('default', () => {
     // 默认任务
     console.log('this is default task');
 });
-//TODO 生成基础文件夹及文件
+
 gulp.task('init', (cb) => {
 
     var flag = index.fsExistsSync('./_config.json');
@@ -40,7 +40,7 @@ gulp.task('new', (cb) => {
     var argv = require('minimist')(process.argv.slice(2));
     var title = argv.title || _config.new_post_default_name;
     var tags = argv.tags;
-    var description = argv.description;
+    var description = argv.description || 'description in there';
     var data = fs.readFile('./assets/scaffolds/post.md', 'utf-8');
 
     var newDate = new Date();
@@ -52,7 +52,7 @@ tags:
   - 
   - 
   - 
-description: description in there
+description: ${description}
 ---
 `;
 
@@ -70,6 +70,7 @@ gulp.task('generate', () => {
     for (key in _config) {
         themeConfig[key] = _config[key];
     }
+    themeConfig.tags = [];
 
     var streamArr = [];
     var stream;
@@ -79,6 +80,12 @@ gulp.task('generate', () => {
     arr = arr.filter((value) => {
         return /.\.md$/.test(value);
     });
+
+    arr.forEach((value) => {
+        var data = fs.readFileSync(`./${_config.source_dir}/_post/${value}`, 'utf-8');
+        var content = fm(data);
+        themeConfig.tags.push(content.attributes.tags);
+    })
 
     arr.forEach((value) => {
         var data = fs.readFileSync(`./${_config.source_dir}/_post/${value}`, 'utf-8');
@@ -98,7 +105,8 @@ gulp.task('generate', () => {
 
         // 记录所有有效文档
         themeConfig.posts.push(content.attributes);
-
+        
+        singleThemeConfig.tags = themeConfig.tags;
         // 详细文章页面数据
         singleThemeConfig.isIndex = false;
         singleThemeConfig.posts.push({

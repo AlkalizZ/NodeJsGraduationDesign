@@ -92,9 +92,9 @@
 
                         <section class="switch-part switch-part2">
                             <div class="widget tagcloud" id="js-tagcloud">
-                                <% for (key of posts){%>
-                                    <% if(key.tags){%>
-                                        <% for (i of key.tags){%>
+                                <% for (key of tags){%>
+                                    <% if(key){%>
+                                        <% for (i of key){%>
                                 <a href="./tags/<%- i %>/" style="font-size: 10px;"><%- i %></a> 
                                         <% } %>
                                     <% } %>                                    
