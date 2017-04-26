@@ -56,7 +56,7 @@ description: ${description}
 ---
 `;
 
-    index.generate(`./${_config.source_dir}/_post/${title}.md`, postData, cb);  // cb为gulp-task定义的回调函数，调用时就证明该任务已经结束
+    index.generate(`./${_config.source_dir}/${title}.md`, postData, cb);  // cb为gulp-task定义的回调函数，调用时就证明该任务已经结束
 });
 
 // 生成public文件夹及文件
@@ -75,20 +75,20 @@ gulp.task('generate', () => {
     var streamArr = [];
     var stream;
     // 渲染markdown文件
-    var arr = fs.readdirSync(`./${_config.source_dir}/_post/`);
+    var arr = fs.readdirSync(`./${_config.source_dir}`);
 
     arr = arr.filter((value) => {
         return /.\.md$/.test(value);
     });
 
     arr.forEach((value) => {
-        var data = fs.readFileSync(`./${_config.source_dir}/_post/${value}`, 'utf-8');
+        var data = fs.readFileSync(`./${_config.source_dir}/${value}`, 'utf-8');
         var content = fm(data);
         themeConfig.tags.push(content.attributes.tags);
     })
 
     arr.forEach((value) => {
-        var data = fs.readFileSync(`./${_config.source_dir}/_post/${value}`, 'utf-8');
+        var data = fs.readFileSync(`./${_config.source_dir}/${value}`, 'utf-8');
         var content = fm(data);
         var newDate = new Date(content.attributes.date);
         var singleThemeConfig = JSON.parse(fs.readFileSync(`./themes/${_config.theme}/_config.json`, 'utf-8'));
