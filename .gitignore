@@ -2,9 +2,7 @@
 .idea
 .DS_Store
 node_modules
+.vscode
 毕业设计
 public/*
-scaffolds/*
 source/_post/*
-.vscode
-/themes/*/.gitignore
