@@ -1,11 +1,9 @@
 ---
 title: Hello World
 date: 2017-02-01
-tag:
+tags:
   - hello world
 ---
-# NodeJsGraduationDesign
-毕业设计 基于NodeJS的静态博客的设计与实现
 
 ## 系统初始化
 `gulp init`
