@@ -35,4 +35,4 @@ description: VPS我是在[腾讯云](http://www.qcloud.com/)上买的，校园�
 
 > 在description中加入你想显示在主页里的`md`语句。
 
-> 在title中不能加入`/`，否则会出现路劲错误的问题
+> 在title中不能加入`/`，否则会出现路径错误的问题
