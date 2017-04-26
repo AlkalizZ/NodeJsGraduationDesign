@@ -84,8 +84,13 @@ gulp.task('generate', () => {
     arr.forEach((value) => {
         var data = fs.readFileSync(`./${_config.source_dir}/${value}`, 'utf-8');
         var content = fm(data);
-        themeConfig.tags.push(content.attributes.tags);
+        content.attributes.tags.forEach((value) => {
+            if(value !== null){
+                themeConfig.tags.push(value);
+            }
+        })
     })
+    console.log(themeConfig.tags)
 
     arr.forEach((value) => {
         var data = fs.readFileSync(`./${_config.source_dir}/${value}`, 'utf-8');
@@ -103,6 +108,10 @@ gulp.task('generate', () => {
         content.attributes.date = `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`;
         content.attributes.postUrl = postUrl;
 
+        content.attributes.tags = content.attributes.tags.filter((value) => {
+            return value !== null;
+        })
+
         // 记录所有有效文档
         themeConfig.posts.push(content.attributes);
         
@@ -119,7 +128,6 @@ gulp.task('generate', () => {
             permalink: singleThemeConfig.url + postUrl,
             tagClass: index.getRandom(1, 5)
         });
-        // var _stream = gulp.src(`./themes/${_config.theme}/layout/singleArticle.ejs`)
         var _stream = gulp.src(`./themes/${_config.theme}/layout/index.ejs`)
             .pipe(gulpEjs(singleThemeConfig, {}, { ext: '.html' }))
             .pipe(logger({
