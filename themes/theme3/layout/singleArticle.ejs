@@ -16,7 +16,7 @@
                         <div class="article-tag tagcloud">
                         <ul class="article-tag-list">
                             <% for(key of tags){ %>
-                            <li class="article-tag-list-item"><a class="color<%- tagClass %>" href="./tags/<%- key %>" style="font-size: 12px;"><%- key %></a></li>           
+                            <li class="article-tag-list-item"><a class="color<%- tagClass %>" href="/tags/<%- key %>" style="font-size: 12px;"><%- key %></a></li>           
                             <% } %>
                         </ul>
                         </div>
@@ -32,12 +32,12 @@
                     <% if (copyright){ %>
                     <div class="copyright">
                         <p><span>本文标题:</span><a href="<%- postUrl %>"><%= title %></a></p>
-                        <p><span>文章作者:</span><a href="./" title="访问 <%= author %> 的个人博客"><%= author %></a></p>
+                        <p><span>文章作者:</span><a href="/" title="访问 <%= author %> 的个人博客"><%= author %></a></p>
                         <p><span>发布时间:</span><%= formatDate %></p>
                         <p>
                             <span>原始链接:</span><a class="post-url" href="<%- permalink %>" title="<%= title %>"><%= permalink %></a>
                             <span class="copy-path" data-clipboard-text="原文: <%= permalink %>　　作者: <%= author %>" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
-                            <script src="./js/clipboard.min.js"></script>
+                            <script src="/js/clipboard.min.js"></script>
                             <script> var clipboard = new Clipboard('.copy-path'); </script>
                         </p>
                         <p>
