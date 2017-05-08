@@ -73,7 +73,6 @@ gulp.task('generate', () => {
     themeConfig.tags = [];
 
     var streamArr = [];
-    var stream;
     // 渲染markdown文件
     var arr = fs.readdirSync(`./${_config.source_dir}`);
 
@@ -90,7 +89,8 @@ gulp.task('generate', () => {
             }
         })
     })
-    console.log(themeConfig.tags)
+    // tags数组去重
+    themeConfig.tags = index.unique(themeConfig.tags);
 
     arr.forEach((value) => {
         var data = fs.readFileSync(`./${_config.source_dir}/${value}`, 'utf-8');
@@ -102,7 +102,7 @@ gulp.task('generate', () => {
         }
 
         // 详细文章页面路径为根目录
-        var postUrl = `./${content.attributes.title}.html`;
+        var postUrl = `/${content.attributes.title}.html`;
 
         content.attributes.description = !content.attributes.description ? content.attributes.title : index.marked(content.attributes.description);
         content.attributes.date = `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`;
@@ -171,6 +171,35 @@ gulp.task('generate', () => {
             'include css': true
         }))
         .pipe(gulp.dest(`./${_config.public_dir}/css/`));
+
+    themeConfig.tags.forEach((value) => {
+        var _posts = themeConfig.posts.filter((_val) => {
+            return (_val.tags.indexOf(value) !== -1);
+        });
+        
+        var tagConfig = JSON.parse(fs.readFileSync(`./themes/${_config.theme}/_config.json`, 'utf-8'));
+        for (key in _config) {
+            tagConfig[key] = _config[key];
+        }
+        tagConfig.tag = value;
+        tagConfig.tagsArticle = _posts;
+        tagConfig.tags = themeConfig.tags;
+
+        console.log(tagConfig.tagsArticle);
+        console.log('````````````````````');
+        var _stream = gulp.src(`./themes/${_config.theme}/layout/tags.ejs`)
+            .pipe(gulpEjs(tagConfig, {}, {ext: '.html'}))
+            .pipe(logger({
+                after: `${value}标签页渲染结束`
+            }))
+            .pipe(rename({
+                dirname: "/",
+                basename: `index`,
+                extname: ".html"
+            }))
+            .pipe(gulp.dest(`./${_config.public_dir}/tags/${value}`))
+        streamArr.push(_stream);
+    });
 
     streamArr.push(stream1, stream2, stream3);
     var stream = concat(streamArr);
