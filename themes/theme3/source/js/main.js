@@ -169,6 +169,29 @@ require([], function (){
       progress.width(percent + '%');
     });
 
+    var searchInput = $('.switch-part4-search input');
+    
+    // 获取文章关键信息。 包括：文章标题，文章标签，文章描述，文章时间。
+    var totalInfo = [],
+        articles = $('.body-wrap article');
+
+    articles.each(function(i, item){
+        var _info = {};
+        _info.title = $(this).attr('data-id');
+        _info.date = $(this).attr('date-time');
+        _info.description = $(this).attr('date-description');
+        _info.tags = [];
+        $('[data-id="'+ $(this).attr('data-id') + '"] .article-tag-list-item a').each(function(i, item){
+            _info.tags.push(item.innerHTML);
+        });
+        totalInfo.push(_info);        
+    });
+
+    searchInput.change(function(){
+        var _val = searchInput.val();
+
+        // TODO 将搜索框搜索的内容，与文章关键信息匹配，将成功搜索的部分留下，其余部分删除
+    })
     
 
     // 控制台输出文字
@@ -177,7 +200,6 @@ require([], function (){
         console.log('%c @ Alkali Lan - 蓝歆      https://www.alkalixin.cn', 'line-height:32px;font-family:"Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei","Hiragino Sans GB","Hiragino Sans GB W3",sans-serif;color:#ccc;font-size:14px;');
         console.log('%c @ Alkali Lan - 蓝歆      https://www.alkalixin.cn', 'line-height:32px;font-family:"Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei","Hiragino Sans GB","Hiragino Sans GB W3",sans-serif;color:#fff;font-size:14px;');
     }
-
 
     require(['/js/highlight.min.js'], function(){
         $(document).ready(function() {
