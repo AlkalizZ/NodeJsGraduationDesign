@@ -5,6 +5,7 @@ tags:
   - SAP
   - ABAP
 description: 在德勤实习快两个星期了，总算是理清了点ERP、SAP、ABAP之间的区别和联系，然后今天就聊点ABAP的基础语法什么的吧。
+searchDescription: 在德勤实习快两个星期了，总算是理清了点ERP、SAP、ABAP之间的区别和联系，然后今天就聊点ABAP的基础语法什么的吧。
 ---
 
 在德勤实习快两个星期了，总算是理清了点ERP、SAP、ABAP之间的区别和联系，然后今天就聊点ABAP的基础语法什么的吧。

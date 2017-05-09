@@ -6,6 +6,7 @@ tags:
   - front-matter
   - dashes
 description: VPS我是在[腾讯云](http://www.qcloud.com/)上买的，校园认证之后只要**￥1/月**，挺划算的。
+searchDescription: VPS我是在腾讯云上买的，校园认证之后只要￥1/月，挺划算的。
 ---
 VPS我是在[腾讯云](http://www.qcloud.com/)上买的，校园认证之后只要**￥1/月**，挺划算的。
 <!--more-->

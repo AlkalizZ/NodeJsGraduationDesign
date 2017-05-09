@@ -3,6 +3,8 @@ title: Hello World
 date: 2017-02-01
 tags:
   - hello world
+description: hello!!! world!!!
+searchDescription: hello world
 ---
 
 ## 系统初始化
@@ -36,6 +38,8 @@ description: VPS我是在[腾讯云](http://www.qcloud.com/)上买的，校园�
 ```
 > 注意： tags里的`-`应该是两个`空格`而非一个`tab`，否则在渲染过程中会报错。
 
-> 在description中加入你想显示在主页里的`md`语句。
+> 在description中写入你想显示在主页里的`md`语句。
+
+> searchDescription写入搜索关键字，这将会影响到搜索功能
 
 > 在title中不能加入`/`，否则会出现路径错误的问题
