@@ -1,7 +1,6 @@
 {
     "menu": {
         "home": "/",
-        "archives": "/archives/",
         "aboutme": "https://resume.alkalixin.cn/"
     },
     "avatar": "/img/1.jpg",
