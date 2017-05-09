@@ -1,4 +1,4 @@
-<article id="<%- key.title %>" class="article article-type-post" itemscope itemprop="blogPost">
+<article id="<%- key.title %>" class="article article-type-post" itemscope itemprop="blogPost" data-id="<%- key.title %>" date-time="<%= key.date %>" date-description="<%= key.searchDescription %>">
     <div class="article-meta">
         <a href="<%- postUrl %>" class="article-date">
             <time datetime="<%= key.date %>" itemprop="datePublished"><%- key.date %></time>
@@ -10,7 +10,7 @@
             <h1 itemprop="name"><a class="article-title" href="<%= postUrl %>"><%- key.title %></a></h1>
         </header>
         <div class="article-entry" itemprop="articleBody">
-            <p><%- key.description %></p>
+            <%- key.description %>
         </div>
         <div class="article-info article-info-index">
             <% if(key.tags){ %>
