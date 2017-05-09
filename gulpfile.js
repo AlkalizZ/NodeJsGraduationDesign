@@ -9,8 +9,8 @@ var fm = require('front-matter');
 var concat = require('pipe-concat');
 var rename = require('gulp-rename');
 var express = require('express');
-var path = require('path')
-var c = require('child_process')
+var path = require('path');
+var c = require('child_process');
 
 gulp.task('default', () => {
     // 默认任务
@@ -185,8 +185,6 @@ gulp.task('generate', () => {
         tagConfig.tagsArticle = _posts;
         tagConfig.tags = themeConfig.tags;
 
-        console.log(tagConfig.tagsArticle);
-        console.log('````````````````````');
         var _stream = gulp.src(`./themes/${_config.theme}/layout/tags.ejs`)
             .pipe(gulpEjs(tagConfig, {}, {ext: '.html'}))
             .pipe(logger({
