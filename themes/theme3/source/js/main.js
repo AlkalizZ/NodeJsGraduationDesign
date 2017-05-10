@@ -172,7 +172,7 @@ require([], function (){
     var searchInput = $('.switch-part4-search input');
     
     // 获取文章关键信息。 包括：文章标题，文章标签，文章描述，文章时间。
-    var totalInfo = [],
+    var totalInfo = [],  // 当前页面中所有的关键信息
         articles = $('.body-wrap article');
 
     articles.each(function(i, item){
@@ -187,11 +187,41 @@ require([], function (){
         totalInfo.push(_info);        
     });
 
-    searchInput.change(function(){
-        var _val = searchInput.val();
+    function handleSearch(){
+        var _searchStr = searchInput.val();
+        // 将搜索框搜索的内容，与文章关键信息匹配，将成功搜索的部分留下，其余部分隐藏
+        var _reg = new RegExp(_searchStr.split('').join('.*'), 'i');
+        var returnArr = [];
+        for(var _info of totalInfo){
+            console.log(`_info=${_info}`);
+            for(var _i in _info){
+                console.log(`_i=${_info[_i]}`);
+                if(_reg.exec(_info[_i])){
+                    returnArr.push(_info.title);
+                    break;
+                }
+            }
+        }
 
-        // TODO 将搜索框搜索的内容，与文章关键信息匹配，将成功搜索的部分留下，其余部分删除
-    })
+        for(var _info of totalInfo){
+            var _elem = $(`[data-id='${_info.title}']`);
+            _elem.hide();
+        }
+        for(var _info of returnArr){
+            var _elem = $(`[data-id='${_info}']`);
+            _elem.show();
+        }
+
+    }
+
+    searchInput.change(function(){
+        handleSearch();
+    });
+
+    var searchButton = $('.switch-part4-search button');
+    searchButton.click(function(){
+        handleSearch();
+    });
     
 
     // 控制台输出文字
