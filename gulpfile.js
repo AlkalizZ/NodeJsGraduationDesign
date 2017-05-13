@@ -1,7 +1,6 @@
 var gulp = require('gulp');
 var index = require('./bin/index');
 var fs = require('fs');
-var ejs = require('ejs');
 var gulpEjs = require('gulp-ejs');
 var logger = require('gulp-logger');
 var stylus = require('gulp-stylus');
