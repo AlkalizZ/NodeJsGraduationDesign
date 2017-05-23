@@ -227,6 +227,12 @@ gulp.task('run',['generate'], (cb) => {
     app.listen(port);
     console.log(`listening at port ${port}`);
 
-    c.exec(`open http://localhost:${port}/`);
+    if(process.platform === 'darwin'){
+        c.exec(`open http://localhost:${port}/`);
+    }else if(process.platform === 'linux'){
+        c.exec(`xdg-open http://localhost:${port}/`);
+    }else{
+        c.exec(`start http://localhost:${port}/`);        
+    }
     cb();
 })
