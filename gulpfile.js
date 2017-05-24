@@ -35,15 +35,12 @@ gulp.task('new', (cb) => {
 
     // 获取config配置文件
     var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
-
     var argv = require('minimist')(process.argv.slice(2));
     var title = argv.title || _config.new_post_default_name;
     var tags = argv.tags;
     var description = argv.description || 'description in there';
     var data = fs.readFile('./assets/scaffolds/post.md', 'utf-8');
-
     var newDate = new Date();
-
     var postData = `---
 title: ${title}
 date: ${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}
@@ -54,9 +51,24 @@ tags:
 description: ${description}
 ---
 `;
-
     index.generate(`./${_config.source_dir}/${title}.md`, postData, cb);  // cb为gulp-task定义的回调函数，调用时就证明该任务已经结束
 });
+
+gulp.task('delete', (cb) => {
+    var flag = index.fsExistsSync('./_config.json');
+    if (!flag) throw Error('未进行初始化');
+    // 获取config配置文件
+    var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
+    var argv = require('minimist')(process.argv.slice(2));
+    var title = argv.title;
+
+    if(fs.existsSync(`./${_config.source_dir}/${title}.md`)){
+        index.clean(`./${_config.source_dir}/${title}.md`);
+    }else{
+        console.error('该文件不存在');
+    }
+    cb();
+})
 
 // 生成public文件夹及文件
 gulp.task('generate', () => {
@@ -208,7 +220,7 @@ gulp.task('clean', () => {
     var flag = index.fsExistsSync('./_config.json');
     if (!flag) throw Error('未进行初始化');
     var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
-    index.clean(`${_config.public_dir}`);
+    index.clean(`./${_config.public_dir}`);
 });
 
 gulp.task('uninit', () => {
