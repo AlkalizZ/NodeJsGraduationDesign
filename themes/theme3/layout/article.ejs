@@ -1,6 +1,6 @@
 <article id="<%- key.title %>" class="article article-type-post" itemscope itemprop="blogPost" data-id="<%- key.title %>" date-time="<%= key.date %>" date-description="<%= key.searchDescription %>">
     <div class="article-meta">
-        <a href="<%- postUrl %>" class="article-date">
+        <a href="/docs/<%- key.title %>.md" class="article-date" title="点击导出文章" download>
             <time datetime="<%= key.date %>" itemprop="datePublished"><%- key.date %></time>
         </a>
     </div>
