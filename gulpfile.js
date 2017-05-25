@@ -183,6 +183,14 @@ gulp.task('generate', () => {
         }))
         .pipe(gulp.dest(`./${_config.public_dir}/css/`));
 
+    var stream4 = gulp.src(`./${_config.source_dir}/*.md`, {
+        base: `./${_config.source_dir}`
+    })
+        .pipe(logger({
+            after: `下载文档准备就绪`
+        }))
+        .pipe(gulp.dest(`./${_config.public_dir}/docs`));
+
     themeConfig.tags.forEach((value) => {
         var _posts = themeConfig.posts.filter((_val) => {
             return (_val.tags.indexOf(value) !== -1);
@@ -210,7 +218,7 @@ gulp.task('generate', () => {
         streamArr.push(_stream);
     });
 
-    streamArr.push(stream1, stream2, stream3);
+    streamArr.push(stream1, stream2, stream3, stream4);
     var stream = concat(streamArr);
     return stream;
 });
