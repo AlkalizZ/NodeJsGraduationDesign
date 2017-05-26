@@ -155,7 +155,7 @@ gulp.task('generate', () => {
             base: `./${_config.source_dir}`
         })
         .pipe(logger({
-            after: `下载文档准备就绪`
+            after: `下载文档${value}准备就绪`
         }))
         .pipe(rename({
             dirname: "/",
