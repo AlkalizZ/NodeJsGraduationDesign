@@ -246,6 +246,8 @@ gulp.task('uninit', () => {
 
 // 利用express进行监听
 gulp.task('run',['generate'], (cb) => {
+    var flag = index.fsExistsSync('./_config.json');
+    if (!flag) throw Error('未进行初始化');
     var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
     var argv = require('minimist')(process.argv.slice(2));
     var port = argv.port || 8888;
@@ -262,4 +264,31 @@ gulp.task('run',['generate'], (cb) => {
         c.exec(`start http://localhost:${port}/`);        
     }
     cb();
-})
+});
+
+gulp.task('switch', (cb) => {
+    var flag = index.fsExistsSync('./_config.json');
+    if (!flag) throw Error('未进行初始化');
+    var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
+    var argv = require('minimist')(process.argv.slice(2));
+    var switchTheme = argv.theme;
+    _config.theme = switchTheme;
+
+    var newConfig = `{
+    "title": "${_config.title}",
+    "subtitle": "${_config.subtitle}",
+    "description": "${_config.description}",
+    "author": "${_config.author}",
+    "language": "${_config.language}",
+    "url": "${_config.url}",
+    "root": "${_config.root}",
+    "source_dir": "${_config.source_dir}",
+    "public_dir": "${_config.public_dir}",
+    "new_post_default_name": "${_config.new_post_default_name}",
+    "highlight": ${_config.highlight},
+    "theme": "${_config.theme}"
+}`;
+
+    index.clean('./_config.json');
+    index.generate(`./_config.json`, newConfig, cb);
+});
