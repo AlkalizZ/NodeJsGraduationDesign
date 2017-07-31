@@ -16,22 +16,22 @@ gulp.task('default', () => {
     console.log('this is default task');
 });
 
-gulp.task('init', (cb) => {
+// gulp.task('init', (cb) => {
 
-    var flag = index.fsExistsSync('./_config.json');
-    if (flag) throw Error('已经初始化');
-    fs.readFile('./assets/_config.json', 'utf-8', (err, data) => {
-        if (err) {
-            console.log(err);
-        }
-        index.generate('./_config.json', data, cb);
-    });
-});
+//     var flag = index.fsExistsSync('./_config.json');
+//     if (flag) throw Error('已经初始化');
+//     fs.readFile('./assets/_config.json', 'utf-8', (err, data) => {
+//         if (err) {
+//             console.log(err);
+//         }
+//         index.generate('./_config.json', data, cb);
+//     });
+// });
 
 // 新建md文件
 gulp.task('new', (cb) => {
-    var flag = index.fsExistsSync('./_config.json');
-    if (!flag) throw Error('未进行初始化');
+    // var flag = index.fsExistsSync('./_config.json');
+    // if (!flag) throw Error('未进行初始化');
 
     // 获取config配置文件
     var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
@@ -51,20 +51,20 @@ tags:
 description: ${description}
 ---
 `;
-    index.generate(`./${_config.source_dir}/${title}.md`, postData, cb);  // cb为gulp-task定义的回调函数，调用时就证明该任务已经结束
+    index.generate(`./${_config.source_dir}/${title}.md`, postData, cb); // cb为gulp-task定义的回调函数，调用时就证明该任务已经结束
 });
 
 gulp.task('delete', (cb) => {
-    var flag = index.fsExistsSync('./_config.json');
-    if (!flag) throw Error('未进行初始化');
+    // var flag = index.fsExistsSync('./_config.json');
+    // if (!flag) throw Error('未进行初始化');
     // 获取config配置文件
     var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
     var argv = require('minimist')(process.argv.slice(2));
     var title = argv.title;
 
-    if(fs.existsSync(`./${_config.source_dir}/${title}.md`)){
+    if (fs.existsSync(`./${_config.source_dir}/${title}.md`)) {
         index.clean(`./${_config.source_dir}/${title}.md`);
-    }else{
+    } else {
         console.error('该文件不存在');
     }
     cb();
@@ -72,8 +72,8 @@ gulp.task('delete', (cb) => {
 
 // 生成public文件夹及文件
 gulp.task('generate', () => {
-    var flag = index.fsExistsSync('./_config.json');
-    if (!flag) throw Error('未进行初始化');
+    // var flag = index.fsExistsSync('./_config.json');
+    // if (!flag) throw Error('未进行初始化');
 
     // 获取config配置文件
     var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
@@ -92,15 +92,15 @@ gulp.task('generate', () => {
     });
 
     arr.forEach((value) => {
-        var data = fs.readFileSync(`./${_config.source_dir}/${value}`, 'utf-8');
-        var content = fm(data);
-        content.attributes.tags.forEach((value) => {
-            if(value !== null){
-                themeConfig.tags.push(value);
-            }
+            var data = fs.readFileSync(`./${_config.source_dir}/${value}`, 'utf-8');
+            var content = fm(data);
+            content.attributes.tags.forEach((value) => {
+                if (value !== null) {
+                    themeConfig.tags.push(value);
+                }
+            })
         })
-    })
-    // tags数组去重
+        // tags数组去重
     themeConfig.tags = index.unique(themeConfig.tags);
 
     arr.forEach((value) => {
@@ -125,7 +125,7 @@ gulp.task('generate', () => {
 
         // 记录所有有效文档
         themeConfig.posts.push(content.attributes);
-        
+
         singleThemeConfig.tags = themeConfig.tags;
         // 详细文章页面数据
         singleThemeConfig.isIndex = false;
@@ -152,17 +152,17 @@ gulp.task('generate', () => {
             .pipe(gulp.dest(`./${_config.public_dir}`));
 
         var _stream1 = gulp.src(`./${_config.source_dir}/${value}`, {
-            base: `./${_config.source_dir}`
-        })
-        .pipe(logger({
-            after: `下载文档${value}准备就绪`
-        }))
-        .pipe(rename({
-            dirname: "/",
-            basename: `${content.attributes.title}`,
-            extname: ".md"
-        }))
-        .pipe(gulp.dest(`./${_config.public_dir}/docs`));
+                base: `./${_config.source_dir}`
+            })
+            .pipe(logger({
+                after: `下载文档${value}准备就绪`
+            }))
+            .pipe(rename({
+                dirname: "/",
+                basename: `${content.attributes.title}`,
+                extname: ".md"
+            }))
+            .pipe(gulp.dest(`./${_config.public_dir}/docs`));
         streamArr.push(_stream, _stream1);
         // 对主页的文章按照时间先后顺序排序
         themeConfig.posts.sort((a, b) => {
@@ -179,8 +179,8 @@ gulp.task('generate', () => {
         .pipe(gulp.dest(`./${_config.public_dir}`))
 
     var stream2 = gulp.src([`./themes/${_config.theme}/${_config.source_dir}/background/**`, `./themes/${_config.theme}/${_config.source_dir}/fancybox/**`, `./themes/${_config.theme}/${_config.source_dir}/font-awesome/**`, `./themes/${_config.theme}/${_config.source_dir}/img/**`, `./themes/${_config.theme}/${_config.source_dir}/js/**`, `./themes/${_config.theme}/${_config.source_dir}/css/*.css`], {
-        base: `./themes/${_config.theme}/${_config.source_dir}`   //如果设置为 base: 'js' 将只会复制 js目录下文件, 其他文件会忽略
-    })
+            base: `./themes/${_config.theme}/${_config.source_dir}` //如果设置为 base: 'js' 将只会复制 js目录下文件, 其他文件会忽略
+        })
         .pipe(logger({
             after: `相关文件复制结束`
         }))
@@ -196,13 +196,13 @@ gulp.task('generate', () => {
         }))
         .pipe(gulp.dest(`./${_config.public_dir}/css/`));
 
-    
+
 
     themeConfig.tags.forEach((value) => {
         var _posts = themeConfig.posts.filter((_val) => {
             return (_val.tags.indexOf(value) !== -1);
         });
-        
+
         var tagConfig = JSON.parse(fs.readFileSync(`./themes/${_config.theme}/_config.json`, 'utf-8'));
         for (key in _config) {
             tagConfig[key] = _config[key];
@@ -212,7 +212,7 @@ gulp.task('generate', () => {
         tagConfig.tags = themeConfig.tags;
 
         var _stream = gulp.src(`./themes/${_config.theme}/layout/tags.ejs`)
-            .pipe(gulpEjs(tagConfig, {}, {ext: '.html'}))
+            .pipe(gulpEjs(tagConfig, {}, { ext: '.html' }))
             .pipe(logger({
                 after: `${value}标签页渲染结束`
             }))
@@ -232,22 +232,22 @@ gulp.task('generate', () => {
 
 // 清除public文件夹
 gulp.task('clean', () => {
-    var flag = index.fsExistsSync('./_config.json');
-    if (!flag) throw Error('未进行初始化');
+    // var flag = index.fsExistsSync('./_config.json');
+    // if (!flag) throw Error('未进行初始化');
     var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
     index.clean(`./${_config.public_dir}`);
 });
 
-gulp.task('uninit', () => {
-    var flag = index.fsExistsSync('./_config.json');
-    if (!flag) throw Error('未进行初始化');
-    index.clean('./_config.json');
-});
+// gulp.task('uninit', () => {
+//     var flag = index.fsExistsSync('./_config.json');
+//     if (!flag) throw Error('未进行初始化');
+//     index.clean('./_config.json');
+// });
 
 // 利用express进行监听
-gulp.task('run',['generate'], (cb) => {
-    var flag = index.fsExistsSync('./_config.json');
-    if (!flag) throw Error('未进行初始化');
+gulp.task('run', ['generate'], (cb) => {
+    // var flag = index.fsExistsSync('./_config.json');
+    // if (!flag) throw Error('未进行初始化');
     var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
     var argv = require('minimist')(process.argv.slice(2));
     var port = argv.port || 8888;
@@ -256,19 +256,19 @@ gulp.task('run',['generate'], (cb) => {
     app.listen(port);
     console.log(`listening at port ${port}`);
 
-    if(process.platform === 'darwin'){
+    if (process.platform === 'darwin') {
         c.exec(`open http://localhost:${port}/`);
-    }else if(process.platform === 'linux'){
+    } else if (process.platform === 'linux') {
         c.exec(`xdg-open http://localhost:${port}/`);
-    }else{
-        c.exec(`start http://localhost:${port}/`);        
+    } else {
+        c.exec(`start http://localhost:${port}/`);
     }
     cb();
 });
 
 gulp.task('switch', (cb) => {
-    var flag = index.fsExistsSync('./_config.json');
-    if (!flag) throw Error('未进行初始化');
+    // var flag = index.fsExistsSync('./_config.json');
+    // if (!flag) throw Error('未进行初始化');
     var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
     var argv = require('minimist')(process.argv.slice(2));
     var switchTheme = argv.theme;
