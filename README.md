@@ -39,7 +39,7 @@ description: VPS我是在[腾讯云](http://www.qcloud.com/)上买的，校园�
 
 ---
 ## 20170804 更新
-看《深入浅出NodeJS》，才知道（也许是之前看过没认真记）`json`文件是可以直接通过`require`引入的，赶紧把项目中所有json的引入方式改为了require，不料踩了一个坑，具体解释就看代码吧：
+看《深入浅出NodeJS》，才知道（也许是之前看过没认真记）`json`文件是可以直接通过`require`引入的，赶紧把项目中所有json的引入方式改为了require，不料出现了一点小问题，具体解释就看代码吧：
 
 ```javascript
 var config1 = require('./config.json');
