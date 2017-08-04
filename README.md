@@ -36,3 +36,20 @@ description: VPS我是在[腾讯云](http://www.qcloud.com/)上买的，校园�
 > 在description中加入你想显示在主页里的`md`语句。
 
 > 在title中不能加入`/`，否则会出现路径错误的问题
+
+---
+## 20170804 更新
+看《深入浅出NodeJS》，才知道（也许是之前看过没认真记）`json`文件是可以直接通过`require`引入的，赶紧把项目中所有json的引入方式改为了require，不料踩了一个坑，具体解释就看代码吧：
+
+```javascript
+var config1 = require('./config.json');
+var config2 = require('./config.json');
+
+// config2.posts = [];
+config2.posts.push([1,2,3,4]);
+
+console.log(`config1:${config1.posts} 
+             config2:${config2.posts}`);
+console.log(config1.posts === config2.posts); // true
+```
+大致上就是这个意思，使用`require`的话，`config1`和`config2`保存的是对`config.json`内容的一个引用。

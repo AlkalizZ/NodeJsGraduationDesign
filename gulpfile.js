@@ -11,6 +11,9 @@ var express = require('express');
 var path = require('path');
 var c = require('child_process');
 
+// json文件可以通过 require 的方式引入
+var _config = require('./_config.json');
+
 gulp.task('default', () => {
     // 默认任务
     console.log('this is default task');
@@ -33,8 +36,10 @@ gulp.task('new', (cb) => {
     // var flag = index.fsExistsSync('./_config.json');
     // if (!flag) throw Error('未进行初始化');
 
+    // ------------------updated at 2017-08-04 by Alkali Lan----------------
     // 获取config配置文件
-    var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
+    // var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
+    // --------------end updated at 2017-08-04 by Alkali Lan----------------
     var argv = require('minimist')(process.argv.slice(2));
     var title = argv.title || _config.new_post_default_name;
     var tags = argv.tags;
@@ -57,8 +62,10 @@ description: ${description}
 gulp.task('delete', (cb) => {
     // var flag = index.fsExistsSync('./_config.json');
     // if (!flag) throw Error('未进行初始化');
+    // ------------------updated at 2017-08-04 by Alkali Lan----------------
     // 获取config配置文件
-    var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
+    // var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
+    // --------------end updated at 2017-08-04 by Alkali Lan----------------
     var argv = require('minimist')(process.argv.slice(2));
     var title = argv.title;
 
@@ -75,9 +82,13 @@ gulp.task('generate', () => {
     // var flag = index.fsExistsSync('./_config.json');
     // if (!flag) throw Error('未进行初始化');
 
+    // ------------------updated at 2017-08-04 by Alkali Lan----------------
     // 获取config配置文件
-    var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
+    // var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
+    // --------------end updated at 2017-08-04 by Alkali Lan----------------
+
     var themeConfig = JSON.parse(fs.readFileSync(`./themes/${_config.theme}/_config.json`, 'utf-8'));
+
     for (key in _config) {
         themeConfig[key] = _config[key];
     }
@@ -92,15 +103,15 @@ gulp.task('generate', () => {
     });
 
     arr.forEach((value) => {
-            var data = fs.readFileSync(`./${_config.source_dir}/${value}`, 'utf-8');
-            var content = fm(data);
-            content.attributes.tags.forEach((value) => {
-                if (value !== null) {
-                    themeConfig.tags.push(value);
-                }
-            })
-        })
-        // tags数组去重
+        var data = fs.readFileSync(`./${_config.source_dir}/${value}`, 'utf-8');
+        var content = fm(data);
+        content.attributes.tags.forEach((value) => {
+            if (value !== null) {
+                themeConfig.tags.push(value);
+            }
+        });
+    });
+    // tags数组去重
     themeConfig.tags = index.unique(themeConfig.tags);
 
     arr.forEach((value) => {
@@ -121,7 +132,7 @@ gulp.task('generate', () => {
 
         content.attributes.tags = content.attributes.tags.filter((value) => {
             return value !== null;
-        })
+        });
 
         // 记录所有有效文档
         themeConfig.posts.push(content.attributes);
@@ -202,8 +213,8 @@ gulp.task('generate', () => {
         var _posts = themeConfig.posts.filter((_val) => {
             return (_val.tags.indexOf(value) !== -1);
         });
-
         var tagConfig = JSON.parse(fs.readFileSync(`./themes/${_config.theme}/_config.json`, 'utf-8'));
+
         for (key in _config) {
             tagConfig[key] = _config[key];
         }
@@ -234,7 +245,9 @@ gulp.task('generate', () => {
 gulp.task('clean', () => {
     // var flag = index.fsExistsSync('./_config.json');
     // if (!flag) throw Error('未进行初始化');
-    var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
+    // ------------------updated at 2017-08-04 by Alkali Lan----------------
+    // var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
+    // --------------end updated at 2017-08-04 by Alkali Lan----------------
     index.clean(`./${_config.public_dir}`);
 });
 
@@ -248,7 +261,9 @@ gulp.task('clean', () => {
 gulp.task('run', ['generate'], (cb) => {
     // var flag = index.fsExistsSync('./_config.json');
     // if (!flag) throw Error('未进行初始化');
-    var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
+    // ------------------updated at 2017-08-04 by Alkali Lan----------------
+    // var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
+    // --------------end updated at 2017-08-04 by Alkali Lan----------------
     var argv = require('minimist')(process.argv.slice(2));
     var port = argv.port || 8888;
     var app = express();
@@ -269,7 +284,9 @@ gulp.task('run', ['generate'], (cb) => {
 gulp.task('switch', (cb) => {
     // var flag = index.fsExistsSync('./_config.json');
     // if (!flag) throw Error('未进行初始化');
-    var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
+    // ------------------updated at 2017-08-04 by Alkali Lan----------------
+    // var _config = JSON.parse(fs.readFileSync('./_config.json', 'utf-8'));
+    // --------------end updated at 2017-08-04 by Alkali Lan----------------
     var argv = require('minimist')(process.argv.slice(2));
     var switchTheme = argv.theme;
     _config.theme = switchTheme;
