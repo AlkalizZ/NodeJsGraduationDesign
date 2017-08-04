@@ -45,7 +45,6 @@ description: VPS我是在[腾讯云](http://www.qcloud.com/)上买的，校园�
 var config1 = require('./config.json');
 var config2 = require('./config.json');
 
-// config2.posts = [];
 config2.posts.push([1,2,3,4]);
 
 console.log(`config1:${config1.posts} 
