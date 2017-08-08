@@ -52,3 +52,7 @@ console.log(`config1:${config1.posts}
 console.log(config1.posts === config2.posts); // true
 ```
 大致上就是这个意思，使用`require`的话，`config1`和`config2`保存的是对`config.json`内容的一个引用。
+
+---
+## 20170808 更新
+使用了eventproxy代替了之前使用的循环中同步读取文件
