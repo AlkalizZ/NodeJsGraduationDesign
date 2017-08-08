@@ -118,7 +118,7 @@ gulp.task('generate', () => {
         });
     });
 
-    // ----------------- updated at 2017-08-04 by Alkali Lan----------------
+    // ----------------- updated at 2017-08-08 by Alkali Lan----------------
     var ep = new eventproxy();
     // 重复监听readFile事件arr.length次之后，执行回调函数
     ep.after('readFile', arr.length, function(_arr) {
@@ -199,7 +199,7 @@ gulp.task('generate', () => {
             ep.emit('readFile', _data);
         });
     });
-    // --------------end updated at 2017-08-04 by Alkali Lan----------------
+    // --------------end updated at 2017-08-08 by Alkali Lan----------------
 
     // 主页渲染
     themeConfig.isIndex = true;
