@@ -44,7 +44,9 @@ gulp.task('new', (cb) => {
     var title = argv.title || _config.new_post_default_name;
     var tags = argv.tags;
     var description = argv.description || 'description in there';
+    // ----------------- updated at 2017-08-08 by Alkali Lan----------------
     var data = fs.readFile('./assets/scaffolds/post.md', 'utf-8');
+    // --------------end updated at 2017-08-08 by Alkali Lan----------------
     var newDate = new Date();
     var postData = `---
 title: ${title}
@@ -98,21 +100,22 @@ gulp.task('generate', () => {
     // 渲染markdown文件
     var arr = fs.readdirSync(`./${_config.source_dir}`);
 
+    // 过滤无效文件，只留下md文件
     arr = arr.filter((value) => {
         return /.\.md$/.test(value);
     });
 
+    // 过滤无用、重复标签
     arr.forEach((value) => {
         var data = fs.readFileSync(`./${_config.source_dir}/${value}`, 'utf-8');
         var content = fm(data);
         content.attributes.tags.forEach((value) => {
-            if (value !== null) {
+            if ((value !== null) && themeConfig.tags.indexOf(value) === -1) {
+                // 如果当前tag不为空，且不存在于总的标签队列中，就将其push到themeConfig.tags中
                 themeConfig.tags.push(value);
             }
         });
     });
-    // tags数组去重
-    themeConfig.tags = index.unique(themeConfig.tags);
 
     arr.forEach((value) => {
         var data = fs.readFileSync(`./${_config.source_dir}/${value}`, 'utf-8');
